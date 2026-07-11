@@ -20,7 +20,7 @@
 html,
 body {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   margin: 0;
 }
 
@@ -74,7 +74,10 @@ body {
 
   width: 100%;
   min-height: 100vh;
+  min-height: 100svh;
   min-height: 100dvh;
+
+  padding: 30px;
 }
 
 .intro-motion {
@@ -84,6 +87,7 @@ body {
     cubic-bezier(.76, 0, .24, 1)
     both;
 
+  transform-origin: center;
   will-change: transform;
 }
 
@@ -116,9 +120,6 @@ body {
 
 /* ---------------------------------
    Hover
-
-   Enabled by JavaScript only after
-   all entrance animations are finished.
 --------------------------------- */
 
 @media (hover: hover) and (pointer: fine) {
@@ -156,7 +157,7 @@ body {
 
   transition:
     opacity
-    1ms
+    2500ms
     cubic-bezier(.25, .1, .25, 1);
 
   transform: translateZ(0);
@@ -210,7 +211,7 @@ body {
   font-size: var(--title-size);
 
   animation:
-    title-reveal
+    title-reveal-desktop
     1s
     cubic-bezier(.76, 0, .24, 1)
     1.15s
@@ -234,11 +235,14 @@ body {
 
   opacity: 1;
 
+  text-shadow:
+  4px 4px 0 #103d24;
+
   transition:
     opacity
-    1ms
+    2500ms
     cubic-bezier(.25, .1, .25, 1)
-    1ms;
+    200ms;
 
   transform: translateZ(0);
   backface-visibility: hidden;
@@ -247,7 +251,7 @@ body {
 
 
 /* ---------------------------------
-   Initial animations
+   Entrance animations
 --------------------------------- */
 
 @keyframes background-switch {
@@ -266,7 +270,7 @@ body {
   }
 }
 
-@keyframes title-reveal {
+@keyframes title-reveal-desktop {
   from {
     width: 0;
   }
@@ -300,6 +304,10 @@ body {
    Exit fade
 --------------------------------- */
 
+/* ---------------------------------
+   Exit: disappear immediately
+--------------------------------- */
+
 body.is-exiting .lockup {
   pointer-events: none;
 }
@@ -307,6 +315,7 @@ body.is-exiting .lockup {
 body.is-exiting .logo-circle,
 body.is-exiting .title-reveal h1 {
   opacity: 0;
+  transition: none;
 }
 
 
@@ -319,7 +328,7 @@ body.is-exiting .bee-flight {
     bee-horizontal
     1050ms
     cubic-bezier(.65, .02, 1, .45)
-    1s
+    2.2s
     forwards;
 }
 
@@ -328,20 +337,17 @@ body.is-exiting .bee-dot {
     bee-vertical
     1050ms
     cubic-bezier(.4, .02, .85, .35)
-    1s
+    2.2s
     forwards;
 }
 
-
-/* Horizontal acceleration */
-
 @keyframes bee-horizontal {
-  0% {
+  from {
     transform:
       translate3d(-50%, -50%, 0);
   }
 
-  100% {
+  to {
     transform:
       translate3d(
         calc(-50% - 120vw),
@@ -350,9 +356,6 @@ body.is-exiting .bee-dot {
       );
   }
 }
-
-
-/* Curved movement upward */
 
 @keyframes bee-vertical {
   0% {
@@ -393,40 +396,94 @@ body.is-exiting .bee-dot {
 
 
 /* ---------------------------------
-   Mobile
+   Vertical screens / mobile
 --------------------------------- */
 
-@media (max-width: 700px) {
+@media (max-aspect-ratio: 4 / 5) {
   :root {
-    --logo-size: 30vw;
-    --title-size: 14vw;
+    --logo-size: clamp(145px, 44vw, 220px);
+    --title-size: clamp(58px, 18vw, 105px);
+  }
+
+  .hero {
+    padding:
+      max(24px, env(safe-area-inset-top))
+      20px
+      max(24px, env(safe-area-inset-bottom));
+  }
+
+  .intro-motion {
+    animation-name: intro-enter-mobile;
+  }
+
+  .lockup {
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .title-reveal {
+    width: 100%;
+    height: 0;
+
+    text-align: center;
+
+    animation:
+      title-reveal-mobile
+      1s
+      cubic-bezier(.76, 0, .24, 1)
+      1.15s
+      forwards;
+  }
+
+  .title-reveal h1 {
+    width: 100%;
+    padding-left: 0;
+
+    text-align: center;
+
+    
+  }
+
+  @keyframes intro-enter-mobile {
+    from {
+      transform: scale(5);
+    }
+
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes title-reveal-mobile {
+    from {
+      height: 0;
+      margin-top: 0;
+    }
+
+    to {
+      height: 0.95em;
+      margin-top: 0.24em;
+    }
   }
 }
 
 
 /* ---------------------------------
-   Reduced motion
+   Small landscape screens
 --------------------------------- */
 
-@media (prefers-reduced-motion: reduce) {
-  body,
-  .intro-motion,
-  .title-reveal,
-  .bee-flight,
-  .bee-dot {
-    animation: none;
+@media (max-width: 700px) and (min-aspect-ratio: 4 / 5) {
+  :root {
+    --logo-size: clamp(120px, 25vw, 170px);
+    --title-size: clamp(55px, 12vw, 95px);
   }
 
-  body {
-    background-color: var(--green);
+  .hero {
+    padding: 20px;
   }
 
-  .title-reveal {
-    width: 4.25em;
-  }
-
-  .logo-circle,
-  .title-reveal h1 {
-    transition: none;
+  .intro-motion {
+    animation-name: intro-enter-mobile;
   }
 }
