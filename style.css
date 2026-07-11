@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&display=swap");
 
 
 /* ---------------------------------
@@ -11,21 +11,22 @@
 
 :root {
   --green: #195c33;
-  --orange: #e8491f;
+  --orange: #de7628;
 
-  --logo-size: clamp(150px, 18vw, 220px);
-  --title-size: clamp(70px, 10vw, 150px);
+--logo-size: clamp(170px, 23vw, 290px);
+--sticker-size: clamp(20px, 2.4vw, 34px);
 }
 
 html,
 body {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   margin: 0;
 }
 
 body {
   overflow: hidden;
+
   background-color: var(--orange);
 
   background-image:
@@ -65,54 +66,51 @@ body {
 
 
 /* ---------------------------------
-   Layout
+   Central composition
 --------------------------------- */
 
 .hero {
+  position: relative;
+  z-index: 2;
+
   display: grid;
   place-items: center;
 
   width: 100%;
   min-height: 100vh;
-  min-height: 100svh;
   min-height: 100dvh;
 
-  padding: 30px;
+  padding:
+    max(100px, env(safe-area-inset-top))
+    24px
+    max(150px, env(safe-area-inset-bottom));
 }
 
-.intro-motion {
-  animation:
-    intro-enter
-    1.25s
-    cubic-bezier(.76, 0, .24, 1)
-    both;
+.entry-link {
+  position: relative;
 
-  transform-origin: center;
-  will-change: transform;
-}
-
-
-/* ---------------------------------
-   Clickable group
---------------------------------- */
-
-.lockup {
   display: flex;
+  flex-direction: column;
   align-items: center;
-
-  margin: 0;
-  padding: 0;
+  justify-content: center;
 
   color: inherit;
   text-decoration: none;
 
-  cursor: pointer;
+  cursor: default;
+  pointer-events: none;
+
   transform-origin: center;
 
   -webkit-tap-highlight-color: transparent;
 }
 
-.lockup:focus-visible {
+body.intro-ready .entry-link {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.entry-link:focus-visible {
   outline: 2px solid var(--orange);
   outline-offset: 20px;
 }
@@ -123,7 +121,7 @@ body {
 --------------------------------- */
 
 @media (hover: hover) and (pointer: fine) {
-  body.intro-ready:not(.is-exiting) .lockup:hover {
+  body.intro-ready:not(.is-exiting) .entry-link:hover {
     animation:
       hover-bounce
       380ms
@@ -133,7 +131,7 @@ body {
 
 
 /* ---------------------------------
-   Logo
+   Bee logo
 --------------------------------- */
 
 .logo {
@@ -142,56 +140,25 @@ body {
   width: var(--logo-size);
   aspect-ratio: 1;
 
-  flex: 0 0 auto;
-}
+  animation:
+    bee-enter
+    1.25s
+    cubic-bezier(.76, 0, .24, 1)
+    both;
 
-.logo-circle {
-  position: absolute;
-  z-index: 1;
-  inset: 0;
+  transform-origin: center;
 
-  border-radius: 50%;
-  background-color: var(--orange);
-
-  opacity: 1;
-
-  transition:
-    opacity
-    2500ms
-    cubic-bezier(.25, .1, .25, 1);
-
-  transform: translateZ(0);
   backface-visibility: hidden;
-  will-change: opacity;
-}
-
-
-/* ---------------------------------
-   Temporary bee
---------------------------------- */
-
-.bee-flight {
-  position: absolute;
-  z-index: 3;
-
-  top: 50%;
-  left: 50%;
-
-  width: 24%;
-  aspect-ratio: 1;
-
-  transform: translate3d(-50%, -50%, 0);
-
-  pointer-events: none;
   will-change: transform;
 }
 
-.bee-dot {
+.logo-image {
+  display: block;
+
   width: 100%;
   height: 100%;
 
-  border-radius: 50%;
-  background-color: var(--orange);
+  object-fit: contain;
 
   transform: translate3d(0, 0, 0);
 
@@ -201,52 +168,43 @@ body {
 
 
 /* ---------------------------------
-   Title
+   Sticker text
+
+   Absolute positioning prevents the
+   sticker entrance from moving the bee.
 --------------------------------- */
 
-.title-reveal {
-  width: 0;
-  overflow: hidden;
+.sticker {
+  position: absolute;
 
-  font-size: var(--title-size);
+  top: calc(100% + clamp(32px, 3vw, 48px));
+  left: 50%;
 
-  animation:
-    title-reveal-desktop
-    1s
-    cubic-bezier(.76, 0, .24, 1)
-    1.15s
-    forwards;
-}
-
-.title-reveal h1 {
   width: max-content;
+  max-width: 92vw;
+  height: 0;
 
-  margin: 0;
-  padding-left: 0.35em;
+  overflow: hidden;
 
   color: var(--orange);
 
   font-family: "Oswald", sans-serif;
-  font-size: 1em;
+  font-size: var(--sticker-size);
   font-weight: 700;
-  line-height: 0.85;
-  letter-spacing: -0.045em;
-  white-space: nowrap;
+  line-height: 0.94;
+  letter-spacing: -0.025em;
+  text-align: center;
 
-  opacity: 1;
+  transform: translateX(-50%);
 
-  text-shadow:
-  4px 4px 0 #103d24;
+  animation:
+    sticker-reveal
+    500ms
+    cubic-bezier(.76, 0, .24, 1)
+    1.8s
+    forwards;
 
-  transition:
-    opacity
-    2500ms
-    cubic-bezier(.25, .1, .25, 1)
-    200ms;
-
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  will-change: opacity;
+  will-change: height;
 }
 
 
@@ -260,9 +218,9 @@ body {
   }
 }
 
-@keyframes intro-enter {
+@keyframes bee-enter {
   from {
-    transform: scale(8);
+    transform: scale(18);
   }
 
   to {
@@ -270,19 +228,19 @@ body {
   }
 }
 
-@keyframes title-reveal-desktop {
+@keyframes sticker-reveal {
   from {
-    width: 0;
+    height: 0;
   }
 
   to {
-    width: 4.25em;
+    height: 2.9em;
   }
 }
 
 
 /* ---------------------------------
-   Hover bounce
+   Hover animation
 --------------------------------- */
 
 @keyframes hover-bounce {
@@ -301,41 +259,44 @@ body {
 
 
 /* ---------------------------------
-   Exit fade
+   Click
 --------------------------------- */
 
-/* ---------------------------------
-   Exit: disappear immediately
---------------------------------- */
-
-body.is-exiting .lockup {
+body.is-exiting .entry-link {
+  cursor: default;
   pointer-events: none;
 }
 
-body.is-exiting .logo-circle,
-body.is-exiting .title-reveal h1 {
+/* Sticker disappears instantly */
+
+body.is-exiting .sticker {
+  visibility: hidden;
   opacity: 0;
+
+  animation: none;
   transition: none;
 }
 
 
 /* ---------------------------------
    Bee flight
+
+   Waits one second, then flies away.
 --------------------------------- */
 
-body.is-exiting .bee-flight {
+body.is-exiting .logo {
   animation:
     bee-horizontal
-    1050ms
+    525ms
     cubic-bezier(.65, .02, 1, .45)
     1s
     forwards;
 }
 
-body.is-exiting .bee-dot {
+body.is-exiting .logo-image {
   animation:
     bee-vertical
-    1050ms
+    525ms
     cubic-bezier(.4, .02, .85, .35)
     1s
     forwards;
@@ -343,17 +304,11 @@ body.is-exiting .bee-dot {
 
 @keyframes bee-horizontal {
   from {
-    transform:
-      translate3d(-50%, -50%, 0);
+    transform: translate3d(0, 0, 0);
   }
 
   to {
-    transform:
-      translate3d(
-        calc(-50% - 120vw),
-        -50%,
-        0
-      );
+    transform: translate3d(-120vw, 0, 0);
   }
 }
 
@@ -396,94 +351,33 @@ body.is-exiting .bee-dot {
 
 
 /* ---------------------------------
-   Vertical screens / mobile
+   Mobile
 --------------------------------- */
 
-@media (max-aspect-ratio: 4 / 5) {
+@media (max-width: 700px) {
   :root {
-    --logo-size: clamp(145px, 44vw, 220px);
-    --title-size: clamp(58px, 18vw, 105px);
+    --logo-size: clamp(175px, 52vw, 260px);
+    --sticker-size: clamp(16px, 5vw, 24px);
   }
 
   .hero {
     padding:
-      max(24px, env(safe-area-inset-top))
-      20px
-      max(24px, env(safe-area-inset-bottom));
+      max(85px, env(safe-area-inset-top))
+      18px
+      max(145px, env(safe-area-inset-bottom));
   }
 
-  .intro-motion {
-    animation-name: intro-enter-mobile;
+  .sticker {
+    top: calc(100% + 32px);
   }
 
-  .lockup {
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-  }
-
-  .title-reveal {
-    width: 100%;
-    height: 0;
-
-    text-align: center;
-
-    animation:
-      title-reveal-mobile
-      1s
-      cubic-bezier(.76, 0, .24, 1)
-      1.15s
-      forwards;
-  }
-
-  .title-reveal h1 {
-    width: 100%;
-    padding-left: 0;
-
-    text-align: center;
-
-    
-  }
-
-  @keyframes intro-enter-mobile {
+  @keyframes bee-enter {
     from {
-      transform: scale(5);
+      transform: scale(14);
     }
 
     to {
       transform: scale(1);
     }
-  }
-
-  @keyframes title-reveal-mobile {
-    from {
-      height: 0;
-      margin-top: 0;
-    }
-
-    to {
-      height: 0.95em;
-      margin-top: 0.24em;
-    }
-  }
-}
-
-
-/* ---------------------------------
-   Small landscape screens
---------------------------------- */
-
-@media (max-width: 700px) and (min-aspect-ratio: 4 / 5) {
-  :root {
-    --logo-size: clamp(120px, 25vw, 170px);
-    --title-size: clamp(55px, 12vw, 95px);
-  }
-
-  .hero {
-    padding: 20px;
-  }
-
-  .intro-motion {
-    animation-name: intro-enter-mobile;
   }
 }
