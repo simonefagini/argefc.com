@@ -328,7 +328,7 @@ body.is-exiting .bee-flight {
     bee-horizontal
     1050ms
     cubic-bezier(.65, .02, 1, .45)
-    2.2s
+    1s
     forwards;
 }
 
@@ -337,7 +337,7 @@ body.is-exiting .bee-dot {
     bee-vertical
     1050ms
     cubic-bezier(.4, .02, .85, .35)
-    2.2s
+    1s
     forwards;
 }
 
