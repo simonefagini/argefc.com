@@ -1,0 +1,432 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap");
+
+
+/* ---------------------------------
+   Base
+--------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --green: #195c33;
+  --orange: #e8491f;
+
+  --logo-size: clamp(150px, 18vw, 220px);
+  --title-size: clamp(70px, 10vw, 150px);
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  background-color: var(--orange);
+
+  background-image:
+    radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.055) 0 1px,
+      transparent 1.2px
+    ),
+    radial-gradient(
+      circle at center,
+      rgba(0, 0, 0, 0.05) 0 0.8px,
+      transparent 1px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.018) 0 1px,
+      transparent 1px 4px
+    );
+
+  background-size:
+    7px 7px,
+    7px 7px,
+    5px 5px;
+
+  background-position:
+    0 0,
+    3.5px 3.5px,
+    0 0;
+
+  animation:
+    background-switch
+    0s
+    linear
+    0.5s
+    forwards;
+}
+
+
+/* ---------------------------------
+   Layout
+--------------------------------- */
+
+.hero {
+  display: grid;
+  place-items: center;
+
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.intro-motion {
+  animation:
+    intro-enter
+    1.25s
+    cubic-bezier(.76, 0, .24, 1)
+    both;
+
+  will-change: transform;
+}
+
+
+/* ---------------------------------
+   Clickable group
+--------------------------------- */
+
+.lockup {
+  display: flex;
+  align-items: center;
+
+  margin: 0;
+  padding: 0;
+
+  color: inherit;
+  text-decoration: none;
+
+  cursor: pointer;
+  transform-origin: center;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lockup:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 20px;
+}
+
+
+/* ---------------------------------
+   Hover
+
+   Enabled by JavaScript only after
+   all entrance animations are finished.
+--------------------------------- */
+
+@media (hover: hover) and (pointer: fine) {
+  body.intro-ready:not(.is-exiting) .lockup:hover {
+    animation:
+      hover-bounce
+      380ms
+      ease-out;
+  }
+}
+
+
+/* ---------------------------------
+   Logo
+--------------------------------- */
+
+.logo {
+  position: relative;
+
+  width: var(--logo-size);
+  aspect-ratio: 1;
+
+  flex: 0 0 auto;
+}
+
+.logo-circle {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+
+  border-radius: 50%;
+  background-color: var(--orange);
+
+  opacity: 1;
+
+  transition:
+    opacity
+    1ms
+    cubic-bezier(.25, .1, .25, 1);
+
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: opacity;
+}
+
+
+/* ---------------------------------
+   Temporary bee
+--------------------------------- */
+
+.bee-flight {
+  position: absolute;
+  z-index: 3;
+
+  top: 50%;
+  left: 50%;
+
+  width: 24%;
+  aspect-ratio: 1;
+
+  transform: translate3d(-50%, -50%, 0);
+
+  pointer-events: none;
+  will-change: transform;
+}
+
+.bee-dot {
+  width: 100%;
+  height: 100%;
+
+  border-radius: 50%;
+  background-color: var(--orange);
+
+  transform: translate3d(0, 0, 0);
+
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+
+/* ---------------------------------
+   Title
+--------------------------------- */
+
+.title-reveal {
+  width: 0;
+  overflow: hidden;
+
+  font-size: var(--title-size);
+
+  animation:
+    title-reveal
+    1s
+    cubic-bezier(.76, 0, .24, 1)
+    1.15s
+    forwards;
+}
+
+.title-reveal h1 {
+  width: max-content;
+
+  margin: 0;
+  padding-left: 0.35em;
+
+  color: var(--orange);
+
+  font-family: "Oswald", sans-serif;
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: -0.045em;
+  white-space: nowrap;
+
+  opacity: 1;
+
+  transition:
+    opacity
+    1ms
+    cubic-bezier(.25, .1, .25, 1)
+    1ms;
+
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: opacity;
+}
+
+
+/* ---------------------------------
+   Initial animations
+--------------------------------- */
+
+@keyframes background-switch {
+  to {
+    background-color: var(--green);
+  }
+}
+
+@keyframes intro-enter {
+  from {
+    transform: scale(8);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes title-reveal {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 4.25em;
+  }
+}
+
+
+/* ---------------------------------
+   Hover bounce
+--------------------------------- */
+
+@keyframes hover-bounce {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* ---------------------------------
+   Exit fade
+--------------------------------- */
+
+body.is-exiting .lockup {
+  pointer-events: none;
+}
+
+body.is-exiting .logo-circle,
+body.is-exiting .title-reveal h1 {
+  opacity: 0;
+}
+
+
+/* ---------------------------------
+   Bee flight
+--------------------------------- */
+
+body.is-exiting .bee-flight {
+  animation:
+    bee-horizontal
+    1050ms
+    cubic-bezier(.65, .02, 1, .45)
+    1s
+    forwards;
+}
+
+body.is-exiting .bee-dot {
+  animation:
+    bee-vertical
+    1050ms
+    cubic-bezier(.4, .02, .85, .35)
+    1s
+    forwards;
+}
+
+
+/* Horizontal acceleration */
+
+@keyframes bee-horizontal {
+  0% {
+    transform:
+      translate3d(-50%, -50%, 0);
+  }
+
+  100% {
+    transform:
+      translate3d(
+        calc(-50% - 120vw),
+        -50%,
+        0
+      );
+  }
+}
+
+
+/* Curved movement upward */
+
+@keyframes bee-vertical {
+  0% {
+    transform:
+      translate3d(0, 0, 0)
+      rotate(0deg)
+      scale(1);
+  }
+
+  20% {
+    transform:
+      translate3d(0, -1vh, 0)
+      rotate(-2deg)
+      scale(1);
+  }
+
+  45% {
+    transform:
+      translate3d(0, -7vh, 0)
+      rotate(-7deg)
+      scale(0.94);
+  }
+
+  70% {
+    transform:
+      translate3d(0, -22vh, 0)
+      rotate(-14deg)
+      scale(0.82);
+  }
+
+  100% {
+    transform:
+      translate3d(0, -55vh, 0)
+      rotate(-22deg)
+      scale(0.65);
+  }
+}
+
+
+/* ---------------------------------
+   Mobile
+--------------------------------- */
+
+@media (max-width: 700px) {
+  :root {
+    --logo-size: 30vw;
+    --title-size: 14vw;
+  }
+}
+
+
+/* ---------------------------------
+   Reduced motion
+--------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .intro-motion,
+  .title-reveal,
+  .bee-flight,
+  .bee-dot {
+    animation: none;
+  }
+
+  body {
+    background-color: var(--green);
+  }
+
+  .title-reveal {
+    width: 4.25em;
+  }
+
+  .logo-circle,
+  .title-reveal h1 {
+    transition: none;
+  }
+}
