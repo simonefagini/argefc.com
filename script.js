@@ -1,22 +1,17 @@
 const introTrigger = document.querySelector("#intro-trigger");
 const beeFlight = document.querySelector(".bee-flight");
 
-const reducedMotion = window.matchMedia(
-  "(prefers-reduced-motion: reduce)"
-).matches;
+const INTRO_READY_DELAY = 2200;
+const EXIT_FALLBACK_DELAY = 3500;
 
 let isExiting = false;
 
 
-/* Enable hover after all entrance animations */
+/* Enable desktop hover after the complete entrance */
 
-if (reducedMotion) {
+window.setTimeout(() => {
   document.body.classList.add("intro-ready");
-} else {
-  window.setTimeout(() => {
-    document.body.classList.add("intro-ready");
-  }, 2200);
-}
+}, INTRO_READY_DELAY);
 
 
 /* Exit animation, then open the linked page */
@@ -30,19 +25,24 @@ introTrigger.addEventListener("click", (event) => {
 
   const destination = introTrigger.href;
 
-  if (reducedMotion) {
-    window.location.assign(destination);
-    return;
-  }
-
   document.body.classList.remove("intro-ready");
   document.body.classList.add("is-exiting");
 
+  let hasNavigated = false;
+
+  const navigate = () => {
+    if (hasNavigated) return;
+
+    hasNavigated = true;
+    window.location.assign(destination);
+  };
+
   beeFlight.addEventListener(
     "animationend",
-    () => {
-      window.location.assign(destination);
-    },
+    navigate,
     { once: true }
   );
+
+  /* Fallback in case animationend is not fired */
+  window.setTimeout(navigate, EXIT_FALLBACK_DELAY);
 });
