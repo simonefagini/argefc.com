@@ -1,25 +1,33 @@
 const introTrigger = document.querySelector("#intro-trigger");
-const beeFlight = document.querySelector(".bee-flight");
+const logo = document.querySelector(".logo");
 
-const INTRO_READY_DELAY = 2200;
-const EXIT_FALLBACK_DELAY = 3500;
+const INTRO_READY_DELAY = 3250;
+const EXIT_FALLBACK_DELAY = 1800;
 
 let isExiting = false;
 
 
-/* Enable desktop hover after the complete entrance */
+/* Enable click after the sticker has entered */
 
 window.setTimeout(() => {
   document.body.classList.add("intro-ready");
+
+  introTrigger.setAttribute("aria-disabled", "false");
+  introTrigger.removeAttribute("tabindex");
 }, INTRO_READY_DELAY);
 
 
-/* Exit animation, then open the linked page */
+/* Click, animate the bee, then navigate */
 
 introTrigger.addEventListener("click", (event) => {
   event.preventDefault();
 
-  if (isExiting) return;
+  const isReady =
+    document.body.classList.contains("intro-ready");
+
+  if (!isReady || isExiting) {
+    return;
+  }
 
   isExiting = true;
 
@@ -28,21 +36,33 @@ introTrigger.addEventListener("click", (event) => {
   document.body.classList.remove("intro-ready");
   document.body.classList.add("is-exiting");
 
+  introTrigger.setAttribute("aria-disabled", "true");
+
   let hasNavigated = false;
 
   const navigate = () => {
-    if (hasNavigated) return;
+    if (hasNavigated) {
+      return;
+    }
 
     hasNavigated = true;
     window.location.assign(destination);
   };
 
-  beeFlight.addEventListener(
+  const handleAnimationEnd = (animationEvent) => {
+    if (animationEvent.animationName === "bee-horizontal") {
+      navigate();
+    }
+  };
+
+  logo.addEventListener(
     "animationend",
-    navigate,
+    handleAnimationEnd,
     { once: true }
   );
 
-  /* Fallback in case animationend is not fired */
-  window.setTimeout(navigate, EXIT_FALLBACK_DELAY);
+  window.setTimeout(
+    navigate,
+    EXIT_FALLBACK_DELAY
+  );
 });
