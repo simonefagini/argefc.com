@@ -5,7 +5,7 @@
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    content="width=device-width, initial-scale=1"
   >
 
   <title>ARGE FC</title>
@@ -13,38 +13,52 @@
   <style>
     html,
     body {
-      background-color: #e8491f;
+      background-color: #de7628;
     }
   </style>
+
+  <link
+    rel="preload"
+    as="image"
+    href="https://raw.githubusercontent.com/simonefagini/argefc.com/refs/heads/main/_resources/LOG_TEMP.png"
+  >
 
   <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
+
   <main class="hero">
-    <div class="intro-motion">
 
-      <a
-        class="lockup"
-        id="intro-trigger"
-        href="./home.html"
-        aria-label="Enter ARGE FC"
-      >
-        <div class="logo">
-          <div class="logo-circle"></div>
+    <a
+      class="entry-link"
+      id="intro-trigger"
+      href="./home.html"
+      aria-label="Enter ARGE FC"
+      aria-disabled="true"
+      tabindex="-1"
+    >
 
-          <div class="bee-flight">
-            <div class="bee-dot"></div>
-          </div>
-        </div>
+      <div class="logo">
+        <img
+          class="logo-image"
+          src="https://raw.githubusercontent.com/simonefagini/argefc.com/refs/heads/main/_resources/LOG_TEMP.png"
+          alt=""
+          fetchpriority="high"
+        >
+      </div>
 
-        <div class="title-reveal">
-          <h1>ARGE FC</h1>
-        </div>
-      </a>
+      <div class="sticker">
+        ASSOCIATION OF<br>
+        SMALL OFFICES TO BEAT<br>
+        THE BIG ONES!
+      </div>
 
-    </div>
+    </a>
+
   </main>
+
+  <h1 class="page-title">ARGE FC</h1>
 
   <script src="./script.js"></script>
 </body>
