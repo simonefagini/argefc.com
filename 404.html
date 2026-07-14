@@ -10,8 +10,15 @@
 
   <meta name="theme-color" content="#195c33">
 
+  <!--
+    Required while the site is hosted at:
+    https://simonefagini.github.io/argefc.com/
+  -->
+  <base href="/argefc.com/">
+
   <title>404 — ARGE FC</title>
 
+  <!-- Immediate background while the external CSS loads -->
   <style>
     html,
     body {
@@ -25,25 +32,25 @@
     href="https://raw.githubusercontent.com/simonefagini/argefc.com/refs/heads/main/_resources/LOG_TEMP.png"
   >
 
-  <link rel="stylesheet" href="./404.css">
+  <link rel="stylesheet" href="404.css">
 </head>
 
 <body>
 
   <main class="error-page">
 
-    <!-- Separate wrapper keeps the fade-in
-         independent from the hover animation -->
     <div class="error-enter">
 
       <a
         class="error-link"
         id="error-link"
-        href="./home/home.html"
-        aria-label="Return to ARGE FC"
+        href="home/home.html"
+        aria-label="Return to ARGE FC home page"
       >
 
-        <span class="error-number">4</span>
+        <span class="error-number error-number-left">
+          4
+        </span>
 
         <span class="error-bee">
           <img
@@ -53,7 +60,9 @@
           >
         </span>
 
-        <span class="error-number">4</span>
+        <span class="error-number error-number-right">
+          4
+        </span>
 
       </a>
 
@@ -61,6 +70,6 @@
 
   </main>
 
-  <script src="./404.js"></script>
+  <script src="404.js"></script>
 </body>
 </html>
