@@ -58,7 +58,9 @@
 
   /* Footer */
   --footer-height-padding: 9px;
-  --footer-text-size: 15px;
+  --footer-text-size: 12px;
+  --footer-line-height: 1.3;
+  --footer-align: center;
 
   /* Bee */
   --bee-size: clamp(26px, 2.7vw, 42px);
@@ -107,10 +109,7 @@ body {
   flex: 1;
 
   width: min(
-    calc(
-      100% -
-      (var(--page-gutter) * 2)
-    ),
+    calc(100% - (var(--page-gutter) * 2)),
     var(--column-width)
   );
 
@@ -397,9 +396,10 @@ overlap the central column.
 
 .site-footer {
   position: relative;
-  z-index: 2;
+  z-index: 12;
 
   width: 100%;
+
   padding:
     var(--footer-height-padding)
     0;
@@ -421,10 +421,10 @@ overlap the central column.
 
   font-size: var(--footer-text-size);
   font-weight: 400;
-  line-height: 1.35;
+  line-height: var(--footer-line-height);
   letter-spacing: 0;
 
-  text-align: center;
+  text-align: var(--footer-align);
   white-space: nowrap;
 }
 
@@ -437,48 +437,182 @@ overlap the central column.
   color: var(--green);
 }
 
+
 /* =================================================
    Mobile controls
 ================================================= */
 
 @media (max-width: 700px) {
   :root {
-    --page-gutter: 19px;
+    --page-gutter: 20px;
 
-    --text-size: 19px;
-    --text-line-height: 1.45;
+    --text-size: clamp(17px, 4.8vw, 19px);
+    --text-line-height: 1.42;
+    --text-letter-spacing: -0.012em;
 
-    --title-size: clamp(65px, 21vw, 94px);
-    --title-bottom: 38px;
+    --title-size: clamp(62px, 18vw, 82px);
+    --title-bottom: 44px;
 
-    --section-title-size: 17px;
-    --edition-size: clamp(32px, 10vw, 46px);
+    --section-title-size: 16px;
 
-    /*
-    More top space remains on mobile so the
-    trophy does not sit over the title.
-    */
-    --content-top: 110px;
-    --content-bottom: 60px;
+    --edition-size: clamp(21px, 6.4vw, 30px);
+    --edition-line-height: 1.05;
 
-    --intro-bottom: 78px;
-    --section-bottom: 50px;
+    --content-top: 54px;
+    --content-bottom: 100px;
 
-    --trophy-size: 62px;
-    --trophy-top: 18px;
-    --trophy-left: 18px;
+    --intro-bottom: 64px;
+    --section-bottom: 58px;
 
-    --footer-text-size: 9px;
+    /* Mobile footer */
+    --footer-height-padding: 11px;
+    --footer-text-size: clamp(9px, 2.7vw, 11px);
+    --footer-line-height: 1.35;
+    --footer-align: center;
 
-    --bee-size: 30px;
+    --bee-size: 29px;
+    --trophy-size: 46px;
   }
 
+
+  /* ---------------------------------
+     Main text flow
+  --------------------------------- */
+
+  p {
+    max-width: 100%;
+
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+
+    text-wrap: pretty;
+  }
+
+
+  /* ---------------------------------
+     Definition
+  --------------------------------- */
+
+  .definition {
+    margin-bottom: 1.5em;
+  }
+
+  .definition-heading {
+    gap: 0.28em;
+    margin-bottom: 0.3em;
+  }
+
+  .definition-heading strong {
+    font-size: 1.8em;
+  }
+
+  .pronunciation,
+  .word-type {
+    font-size: 0.95em;
+  }
+
+  .definition-text {
+    max-width: 100%;
+    padding-left: 1.15em;
+
+    font-size: 1.05em;
+    line-height: 1.4;
+
+    text-wrap: pretty;
+  }
+
+  .definition-text::before {
+    margin-left: -1.15em;
+    margin-right: 0.18em;
+  }
+
+
+  /* ---------------------------------
+     Editions
+  --------------------------------- */
+
+  .edition-list {
+    gap: 8px;
+  }
+
+  .edition-list a {
+    display: block;
+
+    font-size: var(--edition-size);
+    line-height: var(--edition-line-height);
+    letter-spacing: -0.035em;
+
+    white-space: nowrap;
+  }
+
+
+  /* ---------------------------------
+     Trophy
+  --------------------------------- */
+
+  .trophy-link {
+    position: fixed;
+
+    top: auto;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(18px, env(safe-area-inset-bottom));
+    left: auto;
+
+    width: var(--trophy-size);
+
+    transform-origin: 50% 90%;
+  }
+
+  .trophy-link:active {
+    animation:
+      trophy-tilt
+      520ms
+      ease-in-out;
+  }
+
+
+  /* ---------------------------------
+     Footer
+  --------------------------------- */
+
   .site-footer {
-    overflow: hidden;
+    overflow: visible;
+
+    padding:
+      var(--footer-height-padding)
+      0
+      calc(
+        var(--footer-height-padding) +
+        env(safe-area-inset-bottom)
+      );
   }
 
   .site-footer p {
+    width: calc(100% - (var(--page-gutter) * 2));
+    max-width: none;
+    margin: 0 auto;
+
+    font-size: var(--footer-text-size);
+    line-height: var(--footer-line-height);
+
+    text-align: var(--footer-align);
     white-space: normal;
+
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+
+    text-wrap: balance;
+  }
+
+
+  /* ---------------------------------
+     Flying bee
+  --------------------------------- */
+
+  .flying-bee {
+    width: var(--bee-size);
   }
 }
 
