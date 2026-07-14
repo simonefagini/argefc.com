@@ -12,32 +12,56 @@
 
   <title>S AM Cup by Halter 2024 — ARGE FC</title>
 
+  <link
+    rel="preload"
+    as="image"
+    href="./SAM-Cup-2024-Team-18_hover.jpg"
+  >
+
   <link rel="stylesheet" href="./edition.css">
 </head>
 
-<body>
+<body class="is-winner">
 
-  <a
-    class="trophy-link"
-    href="./trophy.html"
-    aria-label="View the S AM Cup"
-  >
-    <img
-      src="../_resources/SAM_CUP.png"
-      alt=""
-    >
-  </a>
+  <!--
+    Remove class="is-winner" and this block
+    for editions without confetti.
+  -->
+
+  <div class="confetti" aria-hidden="true">
+    <span style="--x: 4%;  --delay: -2s;  --duration: 13s; --rotation: 240deg;"></span>
+    <span style="--x: 9%;  --delay: -8s;  --duration: 16s; --rotation: 400deg;"></span>
+    <span style="--x: 14%; --delay: -4s;  --duration: 12s; --rotation: 300deg;"></span>
+    <span style="--x: 19%; --delay: -11s; --duration: 17s; --rotation: 520deg;"></span>
+    <span style="--x: 24%; --delay: -6s;  --duration: 14s; --rotation: 350deg;"></span>
+    <span style="--x: 29%; --delay: -1s;  --duration: 18s; --rotation: 460deg;"></span>
+    <span style="--x: 34%; --delay: -9s;  --duration: 15s; --rotation: 280deg;"></span>
+    <span style="--x: 39%; --delay: -3s;  --duration: 12s; --rotation: 500deg;"></span>
+    <span style="--x: 44%; --delay: -13s; --duration: 19s; --rotation: 380deg;"></span>
+    <span style="--x: 49%; --delay: -7s;  --duration: 14s; --rotation: 440deg;"></span>
+    <span style="--x: 54%; --delay: -5s;  --duration: 17s; --rotation: 320deg;"></span>
+    <span style="--x: 59%; --delay: -12s; --duration: 15s; --rotation: 540deg;"></span>
+    <span style="--x: 64%; --delay: -2s;  --duration: 13s; --rotation: 360deg;"></span>
+    <span style="--x: 69%; --delay: -10s; --duration: 18s; --rotation: 480deg;"></span>
+    <span style="--x: 74%; --delay: -6s;  --duration: 16s; --rotation: 300deg;"></span>
+    <span style="--x: 79%; --delay: -14s; --duration: 20s; --rotation: 520deg;"></span>
+    <span style="--x: 84%; --delay: -4s;  --duration: 14s; --rotation: 420deg;"></span>
+    <span style="--x: 89%; --delay: -9s;  --duration: 17s; --rotation: 340deg;"></span>
+    <span style="--x: 94%; --delay: -1s;  --duration: 15s; --rotation: 500deg;"></span>
+    <span style="--x: 97%; --delay: -12s; --duration: 19s; --rotation: 380deg;"></span>
+  </div>
 
 
   <main class="content">
+
     <h1>
-    <a class="back-link" href="./home.html">
-      ARGE FC
-      </a></h1>
+      <a class="back-link" href="../home/home.html">
+        ARGE FC
+      </a>
+    </h1>
 
 
     <header class="edition-header">
-
       <h2>
         S AM Cup<br>
         by Halter 2024
@@ -45,13 +69,24 @@
     </header>
 
 
-    <figure class="edition-image">
+    <figure
+      class="edition-image"
+      tabindex="0"
+    >
 
       <div class="image-frame">
 
         <img
+          class="team-image team-image-base"
           src="./SAM-Cup-2024-Team-18.jpg"
-          alt="ARGE FC at the S AM CUP by Halter 2024"
+          alt="ARGE FC at the S AM Cup by Halter 2024"
+        >
+
+        <img
+          class="team-image team-image-hover"
+          src="./SAM-Cup-2024-Team-18_hover.jpg"
+          alt=""
+          aria-hidden="true"
         >
 
       </div>
@@ -68,15 +103,33 @@
   <footer class="site-footer">
 
     <p>
-      Visual identity and 
-  
-  <a class="footer-link"
-    href="https://fontsinuse.com/uses/65860/arge-fc-jersey-s-am-cup-2024">
-  teamwear 
-  </a> by
-      <a href="https://superfluo.cc">Studio Bosco Ferreira</a>
+      Visual identity and
+
+      <a
+        class="footer-link"
+        href="https://fontsinuse.com/uses/65860/arge-fc-jersey-s-am-cup-2024"
+      >
+        teamwear
+      </a>
+
+      by
+
+      <a
+        class="footer-link"
+        href="https://superfluo.cc"
+      >
+        Studio Bosco Ferreira
+      </a>
+
       · Website by
-      <a href="https://superfluo.cc">SUPERFLUO</a>
+
+      <a
+        class="footer-link"
+        href="https://superfluo.cc"
+      >
+        SUPERFLUO
+      </a>
+
       · © 2026 ARGE FC
     </p>
 
