@@ -1,10 +1,38 @@
 const introTrigger = document.querySelector("#intro-trigger");
 const logo = document.querySelector(".logo");
+const sticker = document.querySelector(".sticker");
 
 const INTRO_READY_DELAY = 3250;
 const EXIT_FALLBACK_DELAY = 1800;
+const BOUNCE_DELAY = 800;
 
 let isExiting = false;
+
+
+/* Bounce automatically after sticker reveal */
+
+sticker.addEventListener("animationend", (event) => {
+  if (event.animationName !== "sticker-reveal") {
+    return;
+  }
+
+  window.setTimeout(() => {
+    if (!isExiting) {
+      introTrigger.classList.add("intro-bounce");
+    }
+  }, BOUNCE_DELAY);
+});
+
+
+/* Remove the temporary class after the bounce */
+
+introTrigger.addEventListener("animationend", (event) => {
+  if (event.animationName !== "hover-bounce") {
+    return;
+  }
+
+  introTrigger.classList.remove("intro-bounce");
+});
 
 
 /* Enable click after the sticker has entered */
@@ -36,6 +64,7 @@ introTrigger.addEventListener("click", (event) => {
   document.body.classList.remove("intro-ready");
   document.body.classList.add("is-exiting");
 
+  introTrigger.classList.remove("intro-bounce");
   introTrigger.setAttribute("aria-disabled", "true");
 
   let hasNavigated = false;
