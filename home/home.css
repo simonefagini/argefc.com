@@ -26,22 +26,22 @@
 
   /* Paragraphs */
   --text-width: 985px;
-  --text-size: clamp(20px, 2vw, 27px);
+  --text-size: clamp(21px, 2.1vw, 29px);
   --text-weight: 600;
-  --text-line-height: 1.48;
-  --text-letter-spacing: -0.018em;
+  --text-line-height: 1.45;
+  --text-letter-spacing: -0.022em;
 
   /* Main title */
-  --title-size: clamp(82px, 6vw, 150px);
+  --title-size: clamp(84px, 6.2vw, 150px);
   --title-weight: 700;
   --title-line-height: 0.82;
   --title-letter-spacing: 0;
 
   /* Section titles */
-  --section-title-size: clamp(19px, 1.8vw, 23px);
+  --section-title-size: clamp(20px, 1.9vw, 25px);
 
   /* Edition links */
-  --edition-size: clamp(20px, 3.5vw, 50px);
+  --edition-size: clamp(22px, 3.7vw, 52px);
   --edition-line-height: 1;
 
   /* Vertical spacing */
@@ -54,11 +54,11 @@
   /* Trophy */
   --trophy-size: clamp(60px, 6vw, 90px);
   --trophy-top: 24px;
-  --trophy-left: 24px;
+  --trophy-right: 24px;
 
   /* Footer */
   --footer-height-padding: 9px;
-  --footer-text-size: 12px;
+  --footer-text-size: 13px;
   --footer-line-height: 1.3;
   --footer-align: center;
 
@@ -159,7 +159,7 @@ h2 {
   font-size: var(--section-title-size);
   font-weight: 700;
   line-height: 1;
-  letter-spacing: 0.055em;
+  letter-spacing: 0.045em;
   text-transform: uppercase;
 }
 
@@ -266,7 +266,7 @@ a:focus-visible {
 
 .edition-list {
   display: grid;
-  gap: 5px;
+  gap: 6px;
 
   margin: 0;
   padding: 0;
@@ -278,7 +278,7 @@ a:focus-visible {
   font-size: var(--edition-size);
   font-weight: 700;
   line-height: var(--edition-line-height);
-  letter-spacing: -0.05em;
+  letter-spacing: -0.045em;
 }
 
 
@@ -288,10 +288,11 @@ a:focus-visible {
 
 .trophy-link {
   position: fixed;
-  z-index: 10;
+  z-index: 20;
 
   top: var(--trophy-top);
-  left: var(--trophy-left);
+  right: var(--trophy-right);
+  left: auto;
 
   width: var(--trophy-size);
 
@@ -327,18 +328,6 @@ a:focus-visible {
 
   100% {
     transform: rotate(0);
-  }
-}
-
-
-/*
-The trophy stops being fixed before it can
-overlap the central column.
-*/
-
-@media (max-width: 1180px) {
-  .trophy-link {
-    position: absolute;
   }
 }
 
@@ -396,7 +385,7 @@ overlap the central column.
 
 .site-footer {
   position: relative;
-  z-index: 12;
+  z-index: 10;
 
   width: 100%;
 
@@ -420,9 +409,9 @@ overlap the central column.
   color: inherit;
 
   font-size: var(--footer-text-size);
-  font-weight: 400;
+  font-weight: 500;
   line-height: var(--footer-line-height);
-  letter-spacing: 0;
+  letter-spacing: -0.01em;
 
   text-align: var(--footer-align);
   white-space: nowrap;
@@ -439,39 +428,80 @@ overlap the central column.
 
 
 /* =================================================
-   Mobile controls
+   Tablet / narrow desktop
+================================================= */
+
+@media (max-width: 1180px) and (min-width: 701px) {
+  :root {
+    /*
+    Keeps the composition visually narrow
+    and centred as the viewport contracts.
+    */
+    --column-width: 760px;
+    --page-gutter: clamp(40px, 7vw, 70px);
+
+    --text-size: clamp(20px, 2.5vw, 26px);
+    --edition-size: clamp(24px, 4.2vw, 44px);
+
+    --content-top: 90px;
+  }
+
+  /*
+  The trophy remains in the upper-right corner,
+  but scrolls with the page on narrower screens.
+  */
+
+  .trophy-link {
+    position: absolute;
+  }
+}
+
+
+/* =================================================
+   Mobile
 ================================================= */
 
 @media (max-width: 700px) {
   :root {
-    --page-gutter: 20px;
+    /*
+    Narrow, centred mobile composition.
+    */
+    --column-width: 560px;
+    --page-gutter: clamp(26px, 7vw, 40px);
 
-    --text-size: clamp(17px, 4.8vw, 19px);
-    --text-line-height: 1.42;
-    --text-letter-spacing: -0.012em;
+    /* Main text */
+    --text-size: clamp(18px, 5.1vw, 21px);
+    --text-weight: 600;
+    --text-line-height: 1.4;
+    --text-letter-spacing: -0.016em;
 
-    --title-size: clamp(62px, 18vw, 82px);
+    /* Title */
+    --title-size: clamp(64px, 18.5vw, 84px);
     --title-bottom: 44px;
 
-    --section-title-size: 16px;
+    /* Section title */
+    --section-title-size: 17px;
 
-    --edition-size: clamp(21px, 6.4vw, 30px);
+    /* Editions */
+    --edition-size: clamp(22px, 6.6vw, 32px);
     --edition-line-height: 1.05;
 
+    /* Spacing */
     --content-top: 54px;
     --content-bottom: 100px;
 
     --intro-bottom: 64px;
     --section-bottom: 58px;
 
-    /* Mobile footer */
+    /* Footer */
     --footer-height-padding: 11px;
-    --footer-text-size: clamp(9px, 2.7vw, 11px);
+    --footer-text-size: clamp(10px, 3vw, 12px);
     --footer-line-height: 1.35;
     --footer-align: center;
 
+    /* Decorative elements */
     --bee-size: 29px;
-    --trophy-size: 46px;
+    --trophy-size: 48px;
   }
 
 
@@ -533,7 +563,7 @@ overlap the central column.
   --------------------------------- */
 
   .edition-list {
-    gap: 8px;
+    gap: 9px;
   }
 
   .edition-list a {
@@ -553,10 +583,11 @@ overlap the central column.
 
   .trophy-link {
     position: fixed;
+    z-index: 20;
 
     top: auto;
     right: max(16px, env(safe-area-inset-right));
-    bottom: max(18px, env(safe-area-inset-bottom));
+    bottom: max(14px, env(safe-area-inset-bottom));
     left: auto;
 
     width: var(--trophy-size);
@@ -577,6 +608,9 @@ overlap the central column.
   --------------------------------- */
 
   .site-footer {
+    position: relative;
+    z-index: 10;
+
     overflow: visible;
 
     padding:
@@ -589,11 +623,20 @@ overlap the central column.
   }
 
   .site-footer p {
-    width: calc(100% - (var(--page-gutter) * 2));
+    position: static;
+
+    width: min(
+      calc(100% - (var(--page-gutter) * 2)),
+      var(--column-width)
+    );
+
     max-width: none;
     margin: 0 auto;
 
+    color: inherit;
+
     font-size: var(--footer-text-size);
+    font-weight: 500;
     line-height: var(--footer-line-height);
 
     text-align: var(--footer-align);
@@ -626,7 +669,8 @@ overlap the central column.
     display: none;
   }
 
-  .trophy-link:hover {
+  .trophy-link:hover,
+  .trophy-link:active {
     animation: none;
   }
 }
