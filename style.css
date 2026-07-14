@@ -207,6 +207,10 @@ body.intro-ready .entry-link {
   will-change: height;
 }
 
+.entry-link.intro-bounce {
+  animation: hover-bounce 380ms ease-out;
+}
+
 
 /* ---------------------------------
    Entrance animations
