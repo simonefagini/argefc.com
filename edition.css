@@ -1,0 +1,439 @@
+@import url(
+  "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap"
+);
+
+
+/* =================================================
+   CONTROLS
+================================================= */
+
+:root {
+  --green: #195c33;
+  --orange: #de7628;
+  --white: #ffffff;
+  --grey: #b7b7b7;
+
+  --font-family:
+    "Space Grotesk",
+    Arial,
+    sans-serif;
+
+  --column-width: 760px;
+  --page-gutter: 36px;
+
+  --content-top: 70px;
+  --content-bottom: 120px;
+
+  --main-title-size: clamp(72px, 8vw, 118px);
+  --edition-title-size: clamp(42px, 5vw, 70px);
+
+  --image-transition: 650ms;
+
+  --footer-size: 13px;
+
+  /* Confetti */
+  --confetti-opacity: 0.7;
+  --confetti-width: 7px;
+  --confetti-height: 14px;
+}
+
+
+/* =================================================
+   BASE
+================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  background-color: var(--white);
+}
+
+body {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+
+  overflow-x: hidden;
+
+  color: var(--green);
+  background-color: var(--white);
+
+  font-family: var(--font-family);
+  font-weight: 600;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+}
+
+
+/* =================================================
+   CONFETTI
+================================================= */
+
+.confetti {
+  display: none;
+}
+
+body.is-winner .confetti {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+
+  display: block;
+
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti span {
+  position: absolute;
+
+  top: -30px;
+  left: var(--x);
+
+  width: var(--confetti-width);
+  height: var(--confetti-height);
+
+  opacity: var(--confetti-opacity);
+  background-color: var(--orange);
+
+  animation:
+    confetti-fall
+    var(--duration)
+    linear
+    var(--delay)
+    infinite;
+
+  will-change: transform;
+}
+
+/* Alternate colors and shapes */
+
+.confetti span:nth-child(3n) {
+  background-color: var(--green);
+}
+
+.confetti span:nth-child(4n) {
+  width: 12px;
+  height: 5px;
+
+  border-radius: 999px;
+}
+
+.confetti span:nth-child(5n) {
+  background-color: var(--grey);
+}
+
+.confetti span:nth-child(2n) {
+  transform-origin: left center;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform:
+      translate3d(0, -5vh, 0)
+      rotate(0deg);
+  }
+
+  25% {
+    transform:
+      translate3d(22px, 27vh, 0)
+      rotate(calc(var(--rotation) * 0.25));
+  }
+
+  50% {
+    transform:
+      translate3d(-18px, 55vh, 0)
+      rotate(calc(var(--rotation) * 0.5));
+  }
+
+  75% {
+    transform:
+      translate3d(16px, 82vh, 0)
+      rotate(calc(var(--rotation) * 0.75));
+  }
+
+  100% {
+    transform:
+      translate3d(-10px, 110vh, 0)
+      rotate(var(--rotation));
+  }
+}
+
+
+/* =================================================
+   CONTENT
+================================================= */
+
+.content {
+  position: relative;
+  z-index: 2;
+
+  flex: 1;
+
+  width: min(
+    calc(100% - (var(--page-gutter) * 2)),
+    var(--column-width)
+  );
+
+  margin-inline: auto;
+
+  padding:
+    var(--content-top)
+    0
+    var(--content-bottom);
+}
+
+
+/* =================================================
+   ARGE FC TITLE
+================================================= */
+
+h1 {
+  margin:
+    0
+    0
+    clamp(90px, 13vw, 170px);
+
+  font-size: var(--main-title-size);
+  font-weight: 700;
+  line-height: 0.82;
+  letter-spacing: -0.055em;
+}
+
+.back-link {
+  display: inline-block;
+
+  transition:
+    color 180ms ease,
+    transform 380ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.back-link:hover,
+.back-link:focus-visible {
+  color: var(--orange);
+  transform: translateX(6px);
+}
+
+
+/* =================================================
+   EDITION TITLE
+================================================= */
+
+.edition-header {
+  margin-bottom: clamp(60px, 9vw, 110px);
+}
+
+h2 {
+  margin: 0;
+
+  font-size: var(--edition-title-size);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+}
+
+
+/* =================================================
+   TEAM IMAGE
+================================================= */
+
+.edition-image {
+  margin: 0;
+  outline: none;
+}
+
+.image-frame {
+  position: relative;
+
+  overflow: hidden;
+
+  background-color: var(--grey);
+}
+
+.team-image {
+  display: block;
+
+  width: 100%;
+  height: auto;
+}
+
+.team-image-hover {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  opacity: 0;
+
+  transition:
+    opacity
+    var(--image-transition)
+    cubic-bezier(.22, 1, .36, 1);
+}
+
+.edition-image:hover .team-image-hover,
+.edition-image:focus .team-image-hover,
+.edition-image:focus-visible .team-image-hover {
+  opacity: 1;
+}
+
+
+/* =================================================
+   CAPTION
+================================================= */
+
+figcaption {
+  margin-top: 12px;
+
+  color: var(--grey);
+
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  transition:
+    color 250ms ease,
+    transform 450ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.edition-image:hover figcaption,
+.edition-image:focus figcaption,
+.edition-image:focus-visible figcaption {
+  color: var(--orange);
+  transform: translateX(6px);
+}
+
+
+/* =================================================
+   FOOTER
+================================================= */
+
+.site-footer {
+  position: relative;
+  z-index: 3;
+
+  width: 100%;
+  padding: 9px 0;
+
+  color: var(--white);
+  background-color: var(--grey);
+}
+
+.site-footer p {
+  width: min(
+    calc(100% - (var(--page-gutter) * 2)),
+    var(--column-width)
+  );
+
+  margin: 0 auto;
+
+  font-size: var(--footer-size);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.footer-link {
+  color: var(--white);
+}
+
+.footer-link:hover,
+.footer-link:focus-visible {
+  color: var(--green);
+}
+
+
+/* =================================================
+   TABLET
+================================================= */
+
+@media (max-width: 1000px) and (min-width: 701px) {
+  :root {
+    --column-width: 680px;
+    --page-gutter: clamp(40px, 7vw, 70px);
+
+    --confetti-width: 6px;
+    --confetti-height: 12px;
+  }
+}
+
+
+/* =================================================
+   MOBILE
+================================================= */
+
+@media (max-width: 700px) {
+  :root {
+    --column-width: 560px;
+    --page-gutter: clamp(26px, 7vw, 40px);
+
+    --content-top: 52px;
+    --content-bottom: 100px;
+
+    --main-title-size: clamp(62px, 18vw, 84px);
+    --edition-title-size: clamp(36px, 10.5vw, 52px);
+
+    --footer-size: clamp(10px, 3vw, 12px);
+
+    --confetti-opacity: 0.55;
+    --confetti-width: 5px;
+    --confetti-height: 10px;
+  }
+
+  h1 {
+    margin-bottom: 90px;
+  }
+
+  .edition-header {
+    margin-bottom: 54px;
+  }
+
+  .site-footer {
+    padding:
+      11px
+      0
+      calc(11px + env(safe-area-inset-bottom));
+  }
+
+  .site-footer p {
+    text-wrap: balance;
+  }
+}
+
+
+/* =================================================
+   REDUCED MOTION
+================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti {
+    display: none !important;
+  }
+
+  .back-link,
+  .team-image-hover,
+  figcaption {
+    transition: none;
+  }
+}
