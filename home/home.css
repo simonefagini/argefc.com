@@ -3,20 +3,75 @@
 );
 
 
-/* ---------------------------------
-   Base
---------------------------------- */
-
-* {
-  box-sizing: border-box;
-}
+/* =================================================
+   MAIN CONTROLS
+================================================= */
 
 :root {
+  /* Colors */
   --green: #195c33;
   --orange: #de7628;
   --white: #ffffff;
-  --grey: #808080;
-  --grey-border: #808080;
+  --grey: #b7b7b7;
+
+  /* Font */
+  --font-family:
+    "Space Grotesk",
+    Arial,
+    sans-serif;
+
+  /* Main column */
+  --column-width: 980px;
+  --page-gutter: 36px;
+
+  /* Paragraphs */
+  --text-width: 985px;
+  --text-size: clamp(20px, 2vw, 27px);
+  --text-weight: 600;
+  --text-line-height: 1.48;
+  --text-letter-spacing: -0.018em;
+
+  /* Main title */
+  --title-size: clamp(82px, 6vw, 150px);
+  --title-weight: 700;
+  --title-line-height: 0.82;
+  --title-letter-spacing: 0;
+
+  /* Section titles */
+  --section-title-size: clamp(19px, 1.8vw, 23px);
+
+  /* Edition links */
+  --edition-size: clamp(20px, 3.5vw, 50px);
+  --edition-line-height: 1;
+
+  /* Vertical spacing */
+  --content-top: 100px;
+  --content-bottom: 60px;
+  --title-bottom: 70px;
+  --intro-bottom: 50px;
+  --section-bottom: 90px;
+
+  /* Trophy */
+  --trophy-size: clamp(60px, 6vw, 90px);
+  --trophy-top: 24px;
+  --trophy-left: 24px;
+
+  /* Footer */
+  --footer-height-padding: 9px;
+  --footer-text-size: 15px;
+
+  /* Bee */
+  --bee-size: clamp(26px, 2.7vw, 42px);
+  --trail-width: 1.8;
+}
+
+
+/* =================================================
+   Base
+================================================= */
+
+* {
+  box-sizing: border-box;
 }
 
 html {
@@ -24,52 +79,65 @@ html {
 }
 
 body {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
   min-height: 100vh;
+  min-height: 100svh;
   margin: 0;
 
   color: var(--green);
   background-color: var(--white);
 
-  font-family:
-    "Space Grotesk",
-    Arial,
-    sans-serif;
-
-  font-size: 21px;
-  font-weight: 600;
-  line-height: 1.48;
+  font-family: var(--font-family);
+  font-weight: 700;
 }
 
 
-/* ---------------------------------
-   Main column
---------------------------------- */
+/* =================================================
+   Main content
+================================================= */
 
 .content {
   position: relative;
   z-index: 2;
 
-  width: min(calc(100% - 72px), 980px);
-  margin: 0 auto;
+  flex: 1;
+
+  width: min(
+    calc(
+      100% -
+      (var(--page-gutter) * 2)
+    ),
+    var(--column-width)
+  );
+
+  margin-inline: auto;
 
   padding:
-    clamp(150px, 18vh, 220px)
+    var(--content-top)
     0
-    130px;
+    var(--content-bottom);
 }
 
 .intro {
-  margin-bottom: 110px;
+  margin-bottom: var(--intro-bottom);
 }
 
 section {
-  margin-bottom: 96px;
+  margin-bottom: var(--section-bottom);
+}
+
+.content > section:last-child {
+  margin-bottom: 0;
 }
 
 
-/* ---------------------------------
+/* =================================================
    Typography
---------------------------------- */
+================================================= */
 
 h1,
 h2,
@@ -78,18 +146,18 @@ p {
 }
 
 h1 {
-  margin-bottom: 52px;
+  margin-bottom: var(--title-bottom);
 
-  font-size: clamp(82px, 11vw, 150px);
-  font-weight: 700;
-  line-height: 0.82;
-  letter-spacing: -0.075em;
+  font-size: var(--title-size);
+  font-weight: var(--title-weight);
+  line-height: var(--title-line-height);
+  letter-spacing: var(--title-letter-spacing);
 }
 
 h2 {
   margin-bottom: 28px;
 
-  font-size: clamp(19px, 1.8vw, 23px);
+  font-size: var(--section-title-size);
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.055em;
@@ -97,21 +165,26 @@ h2 {
 }
 
 p {
-  max-width: 920px;
+  max-width: var(--text-width);
   margin-bottom: 1.25em;
 
-  font-size: clamp(20px, 2vw, 27px);
-  font-weight: 600;
-  line-height: 1.48;
-  letter-spacing: -0.018em;
+  font-size: var(--text-size);
+  font-weight: var(--text-weight);
+  line-height: var(--text-line-height);
+  letter-spacing: var(--text-letter-spacing);
 }
 
 p:last-child {
   margin-bottom: 0;
 }
 
+
+/* =================================================
+   Dictionary definition
+================================================= */
+
 .definition {
-  margin-bottom: 1.5em;
+  margin-bottom: 2em;
   color: var(--grey);
 }
 
@@ -121,24 +194,24 @@ p:last-child {
   flex-wrap: wrap;
   gap: 0.35em;
 
-  margin-bottom: 0.25em;
+  margin-bottom: 0.35em;
 }
 
 .definition-heading strong {
-  font-size: 1.35em;
+  font-size: 2.2em;
   font-weight: 700;
   letter-spacing: -0.04em;
 }
 
 .pronunciation {
   font-family: Georgia, serif;
-  font-size: 0.78em;
+  font-size: 1.3em;
   font-weight: 400;
 }
 
 .word-type {
   font-family: Georgia, serif;
-  font-size: 0.68em;
+  font-size: 1.3em;
   font-style: italic;
   font-weight: 400;
 }
@@ -147,14 +220,15 @@ p:last-child {
   margin: 0;
   padding-left: 1.25em;
 
-  font-size: 0.82em;
+  font-size: 1.4em;
   line-height: 1.35;
 }
 
 .definition-text::before {
   content: "1";
-  margin-left: -1.25em;
-  margin-right: 0.45em;
+
+  margin-left: -1.35em;
+  margin-right: 0.2em;
 
   font-family: Georgia, serif;
   font-size: 0.75em;
@@ -162,13 +236,14 @@ p:last-child {
 }
 
 
-/* ---------------------------------
+/* =================================================
    Links
---------------------------------- */
+================================================= */
 
 a {
   color: var(--green);
   text-decoration: none;
+  font-weight: 700;
 }
 
 a:hover,
@@ -186,9 +261,9 @@ a:focus-visible {
 }
 
 
-/* ---------------------------------
+/* =================================================
    Editions
---------------------------------- */
+================================================= */
 
 .edition-list {
   display: grid;
@@ -201,25 +276,25 @@ a:focus-visible {
 }
 
 .edition-list a {
-  font-size: clamp(38px, 5.5vw, 68px);
+  font-size: var(--edition-size);
   font-weight: 700;
-  line-height: 1.08;
+  line-height: var(--edition-line-height);
   letter-spacing: -0.05em;
 }
 
 
-/* ---------------------------------
+/* =================================================
    Trophy
---------------------------------- */
+================================================= */
 
 .trophy-link {
   position: fixed;
   z-index: 10;
 
-  top: 24px;
-  left: 24px;
+  top: var(--trophy-top);
+  left: var(--trophy-left);
 
-  width: clamp(60px, 6vw, 90px);
+  width: var(--trophy-size);
 
   transform-origin: 50% 90%;
 }
@@ -257,9 +332,21 @@ a:focus-visible {
 }
 
 
-/* ---------------------------------
+/*
+The trophy stops being fixed before it can
+overlap the central column.
+*/
+
+@media (max-width: 1180px) {
+  .trophy-link {
+    position: absolute;
+  }
+}
+
+
+/* =================================================
    Flying bee
---------------------------------- */
+================================================= */
 
 .fly-layer {
   position: fixed;
@@ -280,21 +367,10 @@ a:focus-visible {
   overflow: visible;
 }
 
-.fly-path {
-  fill: none;
-
+.trail-dash {
   stroke: var(--orange);
-  stroke-width: 1.8;
+  stroke-width: var(--trail-width);
   stroke-linecap: round;
-  stroke-linejoin: round;
-
-  stroke-dasharray: 4 8;
-
-  opacity: 0;
-}
-
-.trail-mask-path {
-  display: none;
 }
 
 .flying-bee {
@@ -303,7 +379,7 @@ a:focus-visible {
   top: 0;
   left: 0;
 
-  width: clamp(26px, 2.7vw, 42px);
+  width: var(--bee-size);
   height: auto;
 
   opacity: 0;
@@ -315,115 +391,101 @@ a:focus-visible {
 }
 
 
-/* ---------------------------------
-   Thin footer
---------------------------------- */
+/* =================================================
+   Footer
+================================================= */
 
 .site-footer {
   position: relative;
   z-index: 2;
 
   width: 100%;
-
   padding:
-    8px
-    max(24px, calc((100vw - 980px) / 2));
+    var(--footer-height-padding)
+    0;
 
-  color: #666660;
+  color: var(--white);
   background-color: var(--grey);
 }
 
 .site-footer p {
+  width: min(
+    calc(100% - (var(--page-gutter) * 2)),
+    var(--column-width)
+  );
+
   max-width: none;
-  margin: 0;
+  margin: 0 auto;
 
-  font-family:
-    "Courier New",
-    Courier,
-    monospace;
+  color: inherit;
 
-  font-size: 10px;
+  font-size: var(--footer-text-size);
   font-weight: 400;
-  line-height: 1.3;
-  letter-spacing: 0.02em;
+  line-height: 1.35;
+  letter-spacing: 0;
+
+  text-align: center;
   white-space: nowrap;
+}
+
+.footer-link {
   color: var(--white);
 }
 
+.footer-link:hover,
+.footer-link:focus-visible {
+  color: var(--green);
+}
 
-/* ---------------------------------
-   Mobile
---------------------------------- */
+/* =================================================
+   Mobile controls
+================================================= */
 
 @media (max-width: 700px) {
-  body {
-    font-size: 18px;
-  }
+  :root {
+    --page-gutter: 19px;
 
-  .content {
-    width: calc(100% - 38px);
+    --text-size: 19px;
+    --text-line-height: 1.45;
 
-    padding:
-      120px
-      0
-      90px;
-  }
+    --title-size: clamp(65px, 21vw, 94px);
+    --title-bottom: 38px;
 
-  .intro {
-    margin-bottom: 78px;
-  }
+    --section-title-size: 17px;
+    --edition-size: clamp(32px, 10vw, 46px);
 
-  section {
-    margin-bottom: 70px;
-  }
+    /*
+    More top space remains on mobile so the
+    trophy does not sit over the title.
+    */
+    --content-top: 110px;
+    --content-bottom: 60px;
 
-  h1 {
-    margin-bottom: 38px;
+    --intro-bottom: 78px;
+    --section-bottom: 50px;
 
-    font-size: clamp(65px, 21vw, 94px);
-  }
+    --trophy-size: 62px;
+    --trophy-top: 18px;
+    --trophy-left: 18px;
 
-  h2 {
-    margin-bottom: 22px;
+    --footer-text-size: 9px;
 
-    font-size: 17px;
-  }
-
-  p {
-    font-size: 19px;
-    line-height: 1.45;
-  }
-
-  .edition-list a {
-    font-size: clamp(32px, 10vw, 46px);
-  }
-
-  .trophy-link {
-    top: 18px;
-    left: 18px;
-
-    width: 62px;
+    --bee-size: 30px;
   }
 
   .site-footer {
-    padding: 8px 18px;
     overflow: hidden;
   }
 
   .site-footer p {
-    font-size: 9px;
     white-space: normal;
-  }
-
-  .flying-bee {
-    width: 30px;
   }
 }
 
 
-/* ---------------------------------
+/* =================================================
    Reduced motion
---------------------------------- */
+================================================= */
 
 @media (prefers-reduced-motion: reduce) {
   .fly-layer {
