@@ -1,0 +1,354 @@
+@import url(
+  "https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap"
+);
+
+
+/* =================================================
+   CONTROLS
+================================================= */
+
+:root {
+  --green: #195c33;
+  --orange: #de7628;
+
+  /* Bee */
+  --bee-size: clamp(120px, 20vw, 230px);
+
+  /* Left 4 */
+  --left-four-size: clamp(180px, 24vw, 330px);
+  --left-four-gap: clamp(18px, 0.5vw, 5px);
+  --left-four-y: 0px;
+
+  /* Right 4 */
+  --right-four-size: clamp(180px, 24vw, 330px);
+  --right-four-gap: clamp(-8px, -0.4vw, -2px);
+  --right-four-y: 0px;
+
+  /* Entrance */
+  --entrance-delay: 1s;
+  --entrance-duration: 10s;
+
+  /* Hover */
+  --hover-scale: 1.1;
+  --hover-duration: 380ms;
+}
+
+
+/* =================================================
+   Base
+================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+html {
+  background-color: var(--green);
+}
+
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+
+  background-color: var(--green);
+
+  background-image:
+    radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.055) 0 1px,
+      transparent 1.2px
+    ),
+    radial-gradient(
+      circle at center,
+      rgba(0, 0, 0, 0.05) 0 0.8px,
+      transparent 1px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.018) 0 1px,
+      transparent 1px 4px
+    );
+
+  background-size:
+    7px 7px,
+    7px 7px,
+    5px 5px;
+
+  background-position:
+    0 0,
+    3.5px 3.5px,
+    0 0;
+}
+
+
+/* =================================================
+   Page
+================================================= */
+
+.error-page {
+  display: grid;
+  place-items: center;
+
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  padding:
+    max(40px, env(safe-area-inset-top))
+    12px
+    max(40px, env(safe-area-inset-bottom));
+}
+
+
+/* =================================================
+   Slow entrance
+================================================= */
+
+.error-enter {
+  opacity: 0;
+
+  animation:
+    error-enter
+    var(--entrance-duration)
+    cubic-bezier(.22, 1, .36, 1)
+    var(--entrance-delay)
+    forwards;
+
+  will-change: opacity;
+}
+
+@keyframes error-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+/* =================================================
+   4 — bee — 4
+================================================= */
+
+.error-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  max-width: 100vw;
+
+  color: var(--orange);
+  text-decoration: none;
+
+  transform-origin: center;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.error-number {
+  display: block;
+  flex: 0 0 auto;
+
+  color: var(--orange);
+
+  font-family: "Oswald", sans-serif;
+  font-weight: 700;
+  line-height: 0.75;
+  letter-spacing: -0.07em;
+}
+
+
+/* ---------------------------------
+   Left 4
+--------------------------------- */
+
+.error-number:first-child {
+  margin-right: var(--left-four-gap);
+
+  font-size: var(--left-four-size);
+
+  transform:
+    translateY(var(--left-four-y));
+}
+
+
+/* ---------------------------------
+   Right 4
+--------------------------------- */
+
+.error-number:last-child {
+  margin-left: var(--right-four-gap);
+
+  font-size: var(--right-four-size);
+
+  transform:
+    translateY(var(--right-four-y));
+}
+
+
+/* ---------------------------------
+   Bee
+--------------------------------- */
+
+.error-bee {
+  display: grid;
+  flex: 0 0 var(--bee-size);
+  place-items: center;
+
+  width: var(--bee-size);
+  height: var(--bee-size);
+}
+
+.error-bee img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+
+/* =================================================
+   Hover
+================================================= */
+
+@media (hover: hover) and (pointer: fine) {
+  body:not(.is-exiting) .error-link:hover {
+    animation:
+      hover-bounce
+      var(--hover-duration)
+      ease-out;
+  }
+}
+
+.error-link:active {
+  animation:
+    hover-bounce
+    var(--hover-duration)
+    ease-out;
+}
+
+@keyframes hover-bounce {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(var(--hover-scale));
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* =================================================
+   Exit
+================================================= */
+
+body.is-exiting .error-link {
+  pointer-events: none;
+}
+
+body.is-exiting .error-enter {
+  animation:
+    error-exit
+    600ms
+    cubic-bezier(.65, .02, 1, .45)
+    forwards;
+}
+
+@keyframes error-exit {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
+
+
+/* =================================================
+   Mobile
+================================================= */
+
+@media (max-width: 700px) {
+  :root {
+    /*
+    Same proportions as desktop:
+    the two 4s remain larger than the bee.
+    */
+
+    /* Bee */
+    --bee-size: clamp(96px, 30vw, 140px);
+
+    /* Left 4 */
+    --left-four-size: clamp(116px, 36vw, 168px);
+    --left-four-gap: clamp(0px, 1.4vw, 8px);
+    --left-four-y: 0px;
+
+    /* Right 4 */
+    --right-four-size: clamp(116px, 36vw, 168px);
+    --right-four-gap: clamp(-7px, -1.2vw, -3px);
+    --right-four-y: 0px;
+
+    /* Touch bounce */
+    --hover-scale: 1.1;
+  }
+
+  .error-page {
+    padding-inline: 4px;
+  }
+}
+
+
+/* =================================================
+   Very narrow phones
+================================================= */
+
+@media (max-width: 380px) {
+  :root {
+    /* Bee */
+    --bee-size: clamp(84px, 28vw, 106px);
+
+    /* Left 4 */
+    --left-four-size: clamp(102px, 34vw, 128px);
+    --left-four-gap: clamp(0px, 1vw, 4px);
+
+    /* Right 4 */
+    --right-four-size: clamp(102px, 34vw, 128px);
+    --right-four-gap: -3px;
+  }
+}
+
+
+/* =================================================
+   Reduced motion
+================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .error-enter {
+    opacity: 1;
+    animation: none;
+  }
+
+  .error-link:hover,
+  .error-link:active,
+  body.is-exiting .error-enter {
+    animation: none;
+  }
+}
