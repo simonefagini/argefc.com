@@ -12,31 +12,31 @@
   --orange: #de7628;
   --white: #ffffff;
   --grey: #b7b7b7;
+  --yellow: #f0c52e;
 
   --font-family:
     "Space Grotesk",
     Arial,
     sans-serif;
 
+  /* Main column */
   --column-width: 760px;
   --page-gutter: 36px;
 
+  /* Page spacing */
   --content-top: 70px;
   --content-bottom: 120px;
 
+  /* ARGE FC title */
   --main-title-size: clamp(72px, 8vw, 118px);
 
   /* Edition title */
-  --edition-title-size: clamp(28px, 3.5vw, 48px);
-  --edition-title-line-height: 1;
-
-  /* Image hover */
-  --image-hover-scale: 1.035;
-  --image-transition: 900ms;
-  --hover-caption-size: clamp(20px, 3.2vw, 42px);
+  --edition-title-size: clamp(20px, 2.4vw, 32px);
+  --edition-title-line-height: 1.05;
 
   /* Footer */
   --footer-size: 13px;
+  --footer-padding: 9px;
 
   /* Confetti */
   --confetti-opacity: 0.75;
@@ -84,6 +84,7 @@ a {
 
 img {
   display: block;
+  max-width: 100%;
 }
 
 
@@ -140,7 +141,7 @@ body.is-winner .confetti {
 }
 
 .confetti span:nth-child(7n) {
-  background-color: #f0c52e;
+  background-color: var(--yellow);
 }
 
 
@@ -261,13 +262,18 @@ h1 {
   transform: translateX(6px);
 }
 
+.back-link:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 6px;
+}
+
 
 /* =================================================
    EDITION TITLE
 ================================================= */
 
 .edition-header {
-  margin-bottom: clamp(42px, 6vw, 72px);
+  margin-bottom: clamp(38px, 5vw, 62px);
 }
 
 h2 {
@@ -276,7 +282,7 @@ h2 {
   font-size: var(--edition-title-size);
   font-weight: 700;
   line-height: var(--edition-title-line-height);
-  letter-spacing: -0.035em;
+  letter-spacing: -0.025em;
 }
 
 
@@ -286,14 +292,12 @@ h2 {
 
 .edition-image {
   margin: 0;
-  outline: none;
 }
 
 .image-frame {
   position: relative;
 
   overflow: hidden;
-  isolation: isolate;
 
   background-color: var(--grey);
 }
@@ -303,98 +307,6 @@ h2 {
 
   width: 100%;
   height: auto;
-
-  transition:
-    transform
-    var(--image-transition)
-    cubic-bezier(.22, 1, .36, 1);
-
-  will-change: transform;
-}
-
-
-/* Black-to-transparent gradient */
-
-.image-frame::before {
-  content: "";
-
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.68) 0%,
-      rgba(0, 0, 0, 0.35) 28%,
-      rgba(0, 0, 0, 0) 68%
-    );
-
-  opacity: 0;
-
-  transition:
-    opacity
-    550ms
-    ease;
-
-  pointer-events: none;
-}
-
-
-/* Hover caption */
-
-.image-frame::after {
-  content: attr(data-hover-caption);
-
-  position: absolute;
-  z-index: 3;
-
-  top: clamp(16px, 3vw, 30px);
-  right: clamp(16px, 3vw, 30px);
-  left: clamp(16px, 3vw, 30px);
-
-  color: var(--white);
-
-  font-size: var(--hover-caption-size);
-  font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: -0.045em;
-
-  opacity: 0;
-
-  transform: translateY(-14px);
-
-  transition:
-    opacity
-    450ms
-    ease,
-    transform
-    650ms
-    cubic-bezier(.22, 1, .36, 1);
-
-  pointer-events: none;
-}
-
-
-/* Hover and keyboard focus */
-
-.edition-image:hover .team-image,
-.edition-image:focus .team-image,
-.edition-image:focus-visible .team-image {
-  transform: scale(var(--image-hover-scale));
-}
-
-.edition-image:hover .image-frame::before,
-.edition-image:focus .image-frame::before,
-.edition-image:focus-visible .image-frame::before {
-  opacity: 1;
-}
-
-.edition-image:hover .image-frame::after,
-.edition-image:focus .image-frame::after,
-.edition-image:focus-visible .image-frame::after {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 
@@ -407,7 +319,10 @@ h2 {
   z-index: 3;
 
   width: 100%;
-  padding: 9px 0;
+
+  padding:
+    var(--footer-padding)
+    0;
 
   color: var(--white);
   background-color: var(--grey);
@@ -421,10 +336,13 @@ h2 {
 
   margin: 0 auto;
 
+  color: inherit;
+
   font-size: var(--footer-size);
   font-weight: 500;
   line-height: 1.35;
   letter-spacing: -0.01em;
+
   text-align: center;
 }
 
@@ -437,6 +355,11 @@ h2 {
   color: var(--green);
 }
 
+.footer-link:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 3px;
+}
+
 
 /* =================================================
    TABLET
@@ -446,6 +369,10 @@ h2 {
   :root {
     --column-width: 680px;
     --page-gutter: clamp(40px, 7vw, 70px);
+
+    --main-title-size: clamp(70px, 10vw, 105px);
+
+    --edition-title-size: clamp(20px, 3vw, 29px);
 
     --confetti-width: 7px;
     --confetti-height: 13px;
@@ -467,13 +394,11 @@ h2 {
 
     --main-title-size: clamp(62px, 18vw, 84px);
 
-    --edition-title-size: clamp(25px, 7vw, 34px);
-    --edition-title-line-height: 1.02;
-
-    --image-hover-scale: 1.025;
-    --hover-caption-size: clamp(18px, 6vw, 28px);
+    --edition-title-size: clamp(19px, 5.5vw, 26px);
+    --edition-title-line-height: 1.08;
 
     --footer-size: clamp(10px, 3vw, 12px);
+    --footer-padding: 11px;
 
     --confetti-opacity: 0.58;
     --confetti-width: 5px;
@@ -485,24 +410,17 @@ h2 {
   }
 
   .edition-header {
-    margin-bottom: 42px;
-  }
-
-  .image-frame::before {
-    background:
-      linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.68) 0%,
-        rgba(0, 0, 0, 0.3) 34%,
-        rgba(0, 0, 0, 0) 72%
-      );
+    margin-bottom: 36px;
   }
 
   .site-footer {
     padding:
-      11px
+      var(--footer-padding)
       0
-      calc(11px + env(safe-area-inset-bottom));
+      calc(
+        var(--footer-padding) +
+        env(safe-area-inset-bottom)
+      );
   }
 
   .site-footer p {
@@ -520,16 +438,7 @@ h2 {
     display: none !important;
   }
 
-  .back-link,
-  .team-image,
-  .image-frame::before,
-  .image-frame::after {
+  .back-link {
     transition: none;
-  }
-
-  .edition-image:hover .team-image,
-  .edition-image:focus .team-image,
-  .edition-image:focus-visible .team-image {
-    transform: none;
   }
 }
