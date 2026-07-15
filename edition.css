@@ -31,8 +31,12 @@
   --main-title-size: clamp(72px, 8vw, 118px);
 
   /* Edition title */
-  --edition-title-size: clamp(20px, 2.4vw, 32px);
-  --edition-title-line-height: 1.05;
+  --edition-title-size: clamp(18px, 2.1vw, 28px);
+  --edition-title-line-height: 1;
+
+  /* Edition note */
+  --note-size: clamp(19px, 2vw, 25px);
+  --note-line-height: 1.45;
 
   /* Footer */
   --footer-size: 13px;
@@ -160,7 +164,6 @@ body.is-winner .confetti {
 .confetti span:nth-child(6n) {
   width: 10px;
   height: 10px;
-
   border-radius: 50%;
 }
 
@@ -273,30 +276,36 @@ h1 {
 ================================================= */
 
 .edition-header {
-  margin-bottom: clamp(38px, 5vw, 62px);
+  margin-bottom: clamp(30px, 4vw, 48px);
 }
 
 h2 {
+  max-width: 100%;
   margin: 0;
 
   font-size: var(--edition-title-size);
   font-weight: 700;
   line-height: var(--edition-title-line-height);
   letter-spacing: -0.025em;
+
+  white-space: nowrap;
 }
 
 
 /* =================================================
-   TEAM IMAGE
+   TEAM IMAGES
 ================================================= */
 
 .edition-image {
   margin: 0;
 }
 
+.edition-image + .edition-image {
+  margin-top: clamp(30px, 5vw, 60px);
+}
+
 .image-frame {
   position: relative;
-
   overflow: hidden;
 
   background-color: var(--grey);
@@ -307,6 +316,45 @@ h2 {
 
   width: 100%;
   height: auto;
+}
+
+
+/* =================================================
+   EDITION NOTE
+================================================= */
+
+.edition-note {
+  max-width: 700px;
+
+  margin-top: clamp(30px, 4vw, 48px);
+  margin-bottom: clamp(42px, 6vw, 72px);
+}
+
+.edition-note p {
+  margin: 0;
+
+  color: var(--grey);
+
+  font-size: var(--note-size);
+  font-weight: 600;
+  line-height: var(--note-line-height);
+  letter-spacing: -0.02em;
+
+  text-wrap: pretty;
+}
+
+.trikot {
+  color: var(--green);
+}
+
+.trikot:hover,
+.trikot:focus-visible {
+  color: var(--orange);
+}
+
+.trikot:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 3px;
 }
 
 
@@ -372,7 +420,8 @@ h2 {
 
     --main-title-size: clamp(70px, 10vw, 105px);
 
-    --edition-title-size: clamp(20px, 3vw, 29px);
+    --edition-title-size: clamp(18px, 2.7vw, 26px);
+    --note-size: clamp(19px, 2.7vw, 23px);
 
     --confetti-width: 7px;
     --confetti-height: 13px;
@@ -394,8 +443,12 @@ h2 {
 
     --main-title-size: clamp(62px, 18vw, 84px);
 
-    --edition-title-size: clamp(19px, 5.5vw, 26px);
-    --edition-title-line-height: 1.08;
+    /* Keeps the complete edition name on one line */
+    --edition-title-size: clamp(15px, 4.4vw, 19px);
+    --edition-title-line-height: 1;
+
+    --note-size: clamp(18px, 5vw, 20px);
+    --note-line-height: 1.42;
 
     --footer-size: clamp(10px, 3vw, 12px);
     --footer-padding: 11px;
@@ -410,7 +463,12 @@ h2 {
   }
 
   .edition-header {
-    margin-bottom: 36px;
+    margin-bottom: 28px;
+  }
+
+  .edition-note {
+    margin-top: 30px;
+    margin-bottom: 42px;
   }
 
   .site-footer {
@@ -430,14 +488,21 @@ h2 {
 
 
 /* =================================================
+   VERY NARROW PHONES
+================================================= */
+
+@media (max-width: 360px) {
+  :root {
+    --edition-title-size: 14px;
+  }
+}
+
+
+/* =================================================
    REDUCED MOTION
 ================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .confetti {
-    display: none !important;
-  }
-
   .back-link {
     transition: none;
   }
