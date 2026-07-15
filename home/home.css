@@ -279,6 +279,7 @@ a:focus-visible {
   font-weight: 700;
   line-height: var(--edition-line-height);
   letter-spacing: -0.045em;
+  
 }
 
 
@@ -426,6 +427,31 @@ a:focus-visible {
   color: var(--green);
 }
 
+/* =================================================
+   Winning editions
+================================================= */
+
+.edition-list .is-winner > a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.18em;
+}
+
+.edition-cup {
+  flex: 0 0 auto;
+
+  width: auto;
+  height: 0.8em;
+  margin-left: 0.3em;
+
+  overflow: visible;
+
+  fill: var(--orange);
+}
+
+#manual {
+  word-spacing: 0.05em;
+}
 
 /* =================================================
    Tablet / narrow desktop
@@ -664,13 +690,6 @@ a:focus-visible {
   .flying-bee {
     width: var(--bee-size);
   }
-}
-
-.superfluo {
-  
-  font-family: "Arial Black";
-  
-  
 }
 
 
