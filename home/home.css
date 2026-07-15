@@ -483,10 +483,8 @@ a:focus-visible {
 }
 
 .superfluo {
-  
-  font-family: "Arial Black";
-  
-  
+  font-family: Arial Black, "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: 900;
 }
 
 
