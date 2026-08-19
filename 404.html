@@ -10,12 +10,6 @@
 
   <meta name="theme-color" content="#195c33">
 
-  <!--
-    Required while the site is hosted at:
-    https://simonefagini.github.io/argefc.com/
-  -->
-  <base href="/argefc.com/">
-
   <title>404 — ARGE FC</title>
 
   <!-- Immediate background while the external CSS loads -->
@@ -26,13 +20,15 @@
     }
   </style>
 
+  <!-- Preload logo -->
   <link
     rel="preload"
     as="image"
     href="https://raw.githubusercontent.com/simonefagini/argefc.com/refs/heads/main/_resources/LOG_TEMP.png"
   >
 
-  <link rel="stylesheet" href="404.css">
+  <!-- 404 page stylesheet -->
+  <link rel="stylesheet" href="/404.css">
 </head>
 
 <body>
@@ -44,7 +40,7 @@
       <a
         class="error-link"
         id="error-link"
-        href="home/home.html"
+        href="/home/home.html"
         aria-label="Return to ARGE FC home page"
       >
 
@@ -70,6 +66,8 @@
 
   </main>
 
-  <script src="404.js"></script>
+  <!-- 404 page script -->
+  <script src="/404.js"></script>
+
 </body>
 </html>
