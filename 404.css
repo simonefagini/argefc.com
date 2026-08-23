@@ -1,6 +1,6 @@
-@import url(
-  "https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap"
-);
+/* Oswald is loaded via <link> in the HTML head, not @import,
+   so it starts fetching immediately instead of waiting on
+   this stylesheet to load first. */
 
 
 /* =================================================

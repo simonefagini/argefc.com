@@ -3,6 +3,24 @@
 <head>
   <meta charset="UTF-8">
 
+  <!-- Skip the splash if home.html was visited in the last 20 minutes -->
+  <script>
+    (function () {
+      var STORAGE_KEY = "argefc:lastVisit";
+      var RECENT_VISIT_WINDOW = 20 * 60 * 1000; // 20 minutes
+
+      try {
+        var lastVisit = window.localStorage.getItem(STORAGE_KEY);
+
+        if (lastVisit && Date.now() - Number(lastVisit) < RECENT_VISIT_WINDOW) {
+          window.location.replace("/home.html");
+        }
+      } catch (error) {
+        // localStorage unavailable — fall back to showing the intro.
+      }
+    })();
+  </script>
+
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1, viewport-fit=cover"
@@ -15,6 +33,20 @@
 
   <title>ARGE FC</title>
 
+  <meta
+    name="description"
+    content="Association of small architecture offices to beat the big ones!"
+  >
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://argefc.com/">
+  <meta property="og:title" content="ARGE FC">
+  <meta
+    property="og:description"
+    content="Association of small architecture offices to beat the big ones!"
+  >
+  <meta property="og:image" content="https://argefc.com/resources/og-image.jpg">
+
   <!-- Prevents a background flash before style.css loads -->
   <style>
     html {
@@ -26,6 +58,20 @@
     }
   </style>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&display=swap"
+  >
+
+  <!-- Warms the cache for home.html's font, so it's already
+       loaded by the time the visitor clicks through. -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap"
+  >
+
   <link
     rel="preload"
     as="image"
@@ -33,6 +79,17 @@
   >
 
   <link rel="stylesheet" href="./style.css">
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="/resources/favicon-32.png"
+  >
+  <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="/resources/apple-touch-icon.png"
+  >
 </head>
 
 <body>
@@ -50,24 +107,61 @@
       tabindex="-1"
     >
 
-      <div class="logo">
-        <img
-          class="logo-image"
-          src="/resources/logo.png"
-          alt=""
-          fetchpriority="high"
-        >
+      <div class="entry-visual">
+
+        <div class="logo">
+          <img
+            class="logo-image"
+            src="/resources/logo.png"
+            alt=""
+            width="4146"
+            height="4147"
+            fetchpriority="high"
+          >
+        </div>
+
+        <div class="sticker">
+          ASSOCIATION OF<br>
+          SMALL OFFICES TO BEAT<br>
+          THE BIG ONES!
+        </div>
+
       </div>
 
-      <div class="sticker">
-        ASSOCIATION OF<br>
-        SMALL OFFICES TO BEAT<br>
-        THE BIG ONES!
+      <!-- Attention nudge: tied to the bee's own box, scales with it -->
+      <div class="nudge-hint">
+        <span class="nudge-text">Click to enter</span>
+
+        <svg
+          class="nudge-arrow"
+          viewBox="0 35 400 240"
+          focusable="false"
+        >
+          <path
+            d="M 350 70 C 260 85, 150 150, 78 232"
+            fill="none"
+            stroke="#111111"
+            stroke-width="10"
+            stroke-linecap="round"
+          />
+          <path
+            d="M 130 225 L 78 232 L 95 178"
+            fill="none"
+            stroke="#111111"
+            stroke-width="10"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
       </div>
 
     </a>
 
   </main>
+
+
+  <!-- Full-page dim while the nudge is showing -->
+  <div class="intro-nudge-overlay" aria-hidden="true"></div>
 
   <script src="./script.js"></script>
 </body>

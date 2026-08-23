@@ -1,6 +1,6 @@
-@import url(
-  "https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&display=swap"
-);
+/* Oswald is loaded via <link> in the HTML head, not @import,
+   so it starts fetching immediately instead of waiting on
+   this stylesheet to load first. */
 
 
 /* ---------------------------------
@@ -99,7 +99,6 @@ body {
 
 .hero {
   position: relative;
-  z-index: 2;
 
   display: grid;
   place-items: center;
@@ -128,8 +127,6 @@ body {
   cursor: default;
   pointer-events: none;
 
-  transform-origin: center;
-
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -143,13 +140,25 @@ body.intro-ready .entry-link {
   outline-offset: 20px;
 }
 
+/* Wraps just the logo + sticker, so the bounce's transform never
+   turns .entry-link itself into a stacking context (that would trap
+   .nudge-hint below the dim overlay whenever the bounce plays) */
+
+.entry-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  transform-origin: center;
+}
+
 
 /* ---------------------------------
    Hover
 --------------------------------- */
 
 @media (hover: hover) and (pointer: fine) {
-  body.intro-ready:not(.is-exiting) .entry-link:hover {
+  body.intro-ready:not(.is-exiting) .entry-link:hover .entry-visual {
     animation:
       hover-bounce
       380ms
@@ -232,7 +241,7 @@ body.intro-ready .entry-link {
   will-change: height;
 }
 
-.entry-link.intro-bounce {
+.entry-link.intro-bounce .entry-visual {
   animation:
     hover-bounce
     380ms
@@ -379,6 +388,98 @@ body.is-exiting .logo-image {
 
 
 /* ---------------------------------
+   Attention nudge (dim + arrow)
+--------------------------------- */
+
+.intro-nudge-overlay {
+  position: fixed;
+  z-index: 3;
+  inset: 0;
+
+  background-color: rgba(255, 255, 255, 0);
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition:
+    opacity 700ms ease,
+    background-color 700ms ease;
+}
+
+body.intro-nudge .intro-nudge-overlay {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+body.is-exiting .intro-nudge-overlay {
+  opacity: 0 !important;
+  transition: none;
+}
+
+.nudge-hint {
+  position: absolute;
+  z-index: 4;
+  top: -45%;
+  right: -35%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.4));
+
+  transition: opacity 700ms ease;
+
+  animation:
+    nudge-pulse
+    1.6s
+    ease-in-out
+    infinite;
+}
+
+body.intro-nudge .nudge-hint {
+  opacity: 1;
+}
+
+body.is-exiting .nudge-hint {
+  opacity: 0 !important;
+  transition: none;
+}
+
+.nudge-arrow {
+  width: 130px;
+  height: auto;
+}
+
+.nudge-text {
+  color: #111111;
+
+  font-family: "Oswald", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-right: -80px;
+}
+
+@keyframes nudge-pulse {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(-4px, 4px, 0);
+  }
+}
+
+
+/* ---------------------------------
    Mobile
 --------------------------------- */
 
@@ -397,6 +498,20 @@ body.is-exiting .logo-image {
 
   .sticker {
     top: calc(100% + 32px);
+  }
+
+  .nudge-hint {
+    top: -42%;
+    right: -17%;
+  }
+
+  .nudge-arrow {
+    width: 100px;
+  }
+
+  .nudge-text {
+    font-size: 18px;
+    margin-right: -50px;
   }
 
   @keyframes bee-enter {

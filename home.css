@@ -1,6 +1,6 @@
-@import url(
-  "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap"
-);
+/* Space Grotesk is loaded via <link> in the HTML head,
+   not @import, so it starts fetching immediately instead
+   of waiting on this stylesheet to load first. */
 
 
 /* =================================================
@@ -48,7 +48,6 @@
   --content-top: 100px;
   --content-bottom: 60px;
   --title-bottom: 70px;
-  --intro-bottom: 50px;
   --section-bottom: 90px;
 
   /* Trophy */
@@ -121,10 +120,6 @@ body {
     var(--content-bottom);
 }
 
-.intro {
-  margin-bottom: var(--intro-bottom);
-}
-
 section {
   margin-bottom: var(--section-bottom);
 }
@@ -178,12 +173,30 @@ p:last-child {
 }
 
 
+.motto {
+  font-style: italic;
+}
+
+.founder {
+  font-size: 0.38em;
+  color: var(--grey);
+  vertical-align: super;
+  letter-spacing: 0;
+  white-space: nowrap;
+  margin-left: 0.22em;
+}
+
+.fm {
+  color: var(--grey);
+  font-size: 1em;
+}
+
 /* =================================================
    Dictionary definition
 ================================================= */
 
 .definition {
-  margin-bottom: 2em;
+  margin-bottom: 4em;
   color: var(--grey);
 }
 
@@ -373,7 +386,16 @@ a:focus-visible {
 
   opacity: 0;
 
-  transform-origin: center;
+  /*
+  The visual "anchor" of the bee — the point that stays pinned
+  to the path and that rotate() pivots around. bee.js reads
+  these same two variables for its translate offset, so tuning
+  them here (e.g. live in DevTools) moves the pivot and the
+  anchor together, in sync, instead of drifting apart.
+  */
+  --bee-anchor-x: 52%;
+  --bee-anchor-y: 100%;
+  transform-origin: var(--bee-anchor-x) var(--bee-anchor-y);
 
   backface-visibility: hidden;
   will-change: transform, opacity;
@@ -482,9 +504,12 @@ a:focus-visible {
   }
 }
 
+
 .superfluo {
-  font-family: Arial Black, "Helvetica Neue", Helvetica, sans-serif;
-  font-weight: 900;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: 700;
+  font-size: 0.9em;
+  letter-spacing: 0.02em;  
 }
 
 
@@ -501,7 +526,7 @@ a:focus-visible {
     --page-gutter: clamp(26px, 7vw, 40px);
 
     /* Main text */
-    --text-size: clamp(18px, 5.1vw, 21px);
+    --text-size: clamp(20px, 5.6vw, 24px);
     --text-weight: 600;
     --text-line-height: 1.4;
     --text-letter-spacing: -0.016em;
@@ -521,7 +546,6 @@ a:focus-visible {
     --content-top: 54px;
     --content-bottom: 100px;
 
-    --intro-bottom: 64px;
     --section-bottom: 58px;
 
     /* Footer */
