@@ -533,7 +533,7 @@ a:focus-visible {
 
     /* Title */
     --title-size: clamp(64px, 18.5vw, 84px);
-    --title-bottom: 44px;
+    --title-bottom: 56px;
 
     /* Section title */
     --section-title-size: 17px;
@@ -580,7 +580,7 @@ a:focus-visible {
   --------------------------------- */
 
   .definition {
-    margin-bottom: 1.5em;
+    margin-bottom: 3em;
   }
 
   .definition-heading {
