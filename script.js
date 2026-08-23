@@ -5,8 +5,12 @@ const sticker = document.querySelector(".sticker");
 const INTRO_READY_DELAY = 3250;
 const EXIT_FALLBACK_DELAY = 1800;
 const BOUNCE_DELAY = 800;
+const BOUNCE_REPEAT_INTERVAL = 15000;
+const ARROW_DELAY = 60000;
 
 let isExiting = false;
+let bounceInterval = null;
+let arrowTimer = null;
 
 
 /* Bounce automatically after sticker reveal */
@@ -35,6 +39,27 @@ introTrigger.addEventListener("animationend", (event) => {
 });
 
 
+/* Repeat the attention bounce until the visitor interacts */
+
+bounceInterval = window.setInterval(() => {
+  const isReady =
+    document.body.classList.contains("intro-ready");
+
+  if (isReady && !isExiting) {
+    introTrigger.classList.add("intro-bounce");
+  }
+}, BOUNCE_REPEAT_INTERVAL);
+
+
+/* Show a hint arrow if the visitor still hasn't clicked after a while */
+
+arrowTimer = window.setTimeout(() => {
+  if (!isExiting) {
+    document.body.classList.add("intro-nudge");
+  }
+}, ARROW_DELAY);
+
+
 /* Enable click after the sticker has entered */
 
 window.setTimeout(() => {
@@ -58,6 +83,9 @@ introTrigger.addEventListener("click", (event) => {
   }
 
   isExiting = true;
+
+  window.clearInterval(bounceInterval);
+  window.clearTimeout(arrowTimer);
 
   const destination = introTrigger.href;
 

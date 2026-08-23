@@ -3,6 +3,19 @@
 <head>
   <meta charset="UTF-8">
 
+  <!-- Record this visit so a return to "/" within 20 minutes skips the splash -->
+  <script>
+    (function () {
+      var STORAGE_KEY = "argefc:lastVisit";
+
+      try {
+        window.localStorage.setItem(STORAGE_KEY, Date.now());
+      } catch (error) {
+        // localStorage unavailable — splash will just show again next time.
+      }
+    })();
+  </script>
+
   <meta
   name="viewport"
   content="width=device-width, initial-scale=1, viewport-fit=cover"
@@ -10,7 +23,40 @@
 
   <title>ARGE FC</title>
 
+  <meta
+    name="description"
+    content="Association of small architecture offices to beat the big ones!"
+  >
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://argefc.com/home.html">
+  <meta property="og:title" content="ARGE FC">
+  <meta
+    property="og:description"
+    content="Association of small architecture offices to beat the big ones!"
+  >
+  <meta property="og:image" content="https://argefc.com/resources/og-image.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap"
+  >
+
   <link rel="stylesheet" href="./home.css">
+  <link
+  rel="icon"
+  type="image/png"
+  sizes="32x32"
+  href="/resources/favicon-32.png"
+>
+
+<link
+  rel="apple-touch-icon"
+  sizes="180x180"
+  href="/resources/apple-touch-icon.png"
+>
 </head>
 
 <body>
@@ -24,6 +70,8 @@
     <img
       src="/resources/sam-cup.png"
       alt=""
+      width="600"
+      height="900"
     >
   </a>
 
@@ -44,6 +92,8 @@
       id="flying-bee"
       src="/resources/logo.png"
       alt=""
+      width="4146"
+      height="4147"
     >
 
   </div>
@@ -57,7 +107,7 @@
 
       <div class="definition">
   <div class="definition-heading">
-    <strong>ARGE</strong>
+    <strong>Arge</strong>
     <span class="pronunciation">/ˈaʁɡə/</span>
     <span class="word-type">noun</span>
   </div>
@@ -67,35 +117,58 @@
     formed around a shared objective.
   </p>
 </div>
-<br>
 <p>
-  ARGE FC is a football club founded in 2021 by a collective of small
-  architecture offices to compete in the Basel S AM Cup.
+Arge FC is a football club founded in 2021 by an association of small
+architecture offices with only one shared goal: to compete in the
+Basel&nbsp;S&nbsp;AM&nbsp;Cup and <span class="motto">“beat the big ones!”</span>.
 </p>
     </section>
     <section>
       <p class="office-text">
-       As of 2026 is formed by 
-        <a href="https://guerraclauss.com/en" target="_blank" rel="noopener">Guerra Clauss (founder)</a>,
-        <a href="https://an-a-c.com" target="_blank" rel="noopener">an-a-c (founder)</a>,
+       As of 2026, it is formed by 
+        <a href="https://guerraclauss.com/en" target="_blank" rel="noopener">Guerra Clauss<sup class="founder">FM</sup></a>, 
+        <a href="https://an-a-c.com" target="_blank" rel="noopener">an-a-c<sup class="founder">FM</sup></a>, <a class="superfluo" href="http://superfluo.cc/" target="_blank" rel="noopener">SUPERFLUO<sup class="founder">FM</sup></a>, 
         <a href="https://k-e45.com" target="_blank" rel="noopener">Kooperative E45</a>,
         <a href="https://www.boscoferreira.com" target="_blank" rel="noopener">Studio Bosco Ferreira</a>,
         <a href="https://diwersyweimar.eu" target="_blank" rel="noopener">Diwersy Weimar</a>,
-        <a href="https://www.instagram.com/office.for.ordinary.objects/?hl=en" target="_blank" rel="noopener">office for ordinary objects (ooo)</a>,
+        <a href="https://www.instagram.com/office.for.ordinary.objects/?hl=en" target="_blank" rel="noopener">Office for Ordinary Objects (ooo)</a>,
         <a href="https://www.neume.ch" target="_blank" rel="noopener">Atelier Neume</a>,
-        <a href="https://studiohammer.ch" target="_blank" rel="noopener">Studio Hammer</a>
+        <a href="https://lukaskerner.studio" target="_blank" rel="noopener">Studio Lukas Kerner</a>,
+        <a href="https://studiohammer.ch" target="_blank" rel="noopener">Studio Hammer</a>,
+        <a href="https://studiocopan.ch" target="_blank" rel="noopener">Studio copan</a>,
         and
-        <a class="superfluo" href="http://superfluo.cc/" target="_blank" rel="noopener">SUPERFLUO</a>.
+        <a href="https://weyellzipse.ch" target="_blank" rel="noopener">Weyell Zipse</a>.
       </p>
-
     </section>
-
-
+    <section>
+      <p class="friends">
+        Friends of Arge FC and individual players, in no particular order:
+        Oliver Karl, Florian Happes, Jakob Bittner, Simone Fagini,
+        Levin Arnold, Jeremy Walker, Leandro González, Balàzs Földvàry,
+        Mathew Critchley, Juan Colomina, Marcel Weimar, Nick Chadde,
+        Pablo Iselin, Marie Leber, Robert Schiemann, Bettina Satzl,
+        Jan Skoček, Gareth Bracewell, Tomás Cabral, Christian Löckener,
+        Paolo Migliori, Angela Charters, Sven Kühling, Jan Zachmann,
+        Leon Faust, Bosco Ferreira, Martin Grund, Giulio Angelini,
+        Lukas Kerner, Andrea Caldas León, Moritz Wahl, Arthur Clauss,
+        Tobias Diwersy, Christian Weyell, Andrea Pappalardo.
+      </p>
+      <p class="fm">FM = Founding Member</p>
+    </section>
     <section>
 
       <h2>Editions</h2>
 
       <ul class="edition-list">
+        <li>
+          <a
+            href="https://www.sam-basel.org/de/samcup"
+            target="_blank"
+            rel="noopener"
+            style="color: #e4e4e4;"
+          >S AM Cup by Marti 2026</a>
+        </li>
+
         <li class="is-winner">
           <a id="manual" href="/2025/edition2025.html">S AM CUP by Marti 2025<svg
       class="edition-cup"
@@ -182,7 +255,7 @@
   </footer>
 
 
-  <script src="./home.js"></script>
+  <script src="./bee.js"></script>
 
 </body>
 </html>

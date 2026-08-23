@@ -19,8 +19,8 @@ Higher values = slower bee.
 16000 means that one flight lasts
 approximately 16 seconds.
 */
-const MIN_FLIGHT_DURATION = 16000;
-const MAX_FLIGHT_DURATION = 22000;
+const MIN_FLIGHT_DURATION = 18000;
+const MAX_FLIGHT_DURATION = 21000;
 
 
 /*
@@ -51,10 +51,36 @@ const DASH_LENGTH = 5;
 
 
 /*
+Thickness of each dash.
+*/
+const DASH_THICKNESS = 2.2;
+
+
+/*
+How far behind the bee's current position the trail's
+leading dot sits — a gap, rather than starting right
+under the bee.
+*/
+const TRAIL_GAP = 5;
+
+
+/*
 Pause between one flight and the next.
 */
-const MIN_FLIGHT_DELAY = 5000;
-const MAX_FLIGHT_DELAY = 10000;
+const MIN_FLIGHT_DELAY = 1000;
+const MAX_FLIGHT_DELAY = 5000;
+
+
+/*
+Keeps flights gentle: a route is only accepted if its heading
+never has to turn more than this much overall, and never gets
+closer than MIN_ANGLE_FROM_VERTICAL to straight up/down — both
+are exactly the situations where the anchor-based rotation is
+most visible if it's ever slightly off.
+*/
+const MAX_HEADING_SWEEP = 90;
+const MIN_ANGLE_FROM_VERTICAL = 25;
+const MAX_ROUTE_ATTEMPTS = 30;
 
 
 /* ---------------------------------
@@ -67,6 +93,23 @@ let endFlightTimer = null;
 let resizeTimer = null;
 
 let lastDashDistance = 0;
+
+/*
+Mobile browsers change window.innerHeight (and fire "resize")
+when the address bar shows/hides on scroll. Tracking the width
+lets us ignore those height-only wobbles and only react to an
+actual resize (window resizing, orientation change).
+*/
+let lastViewportWidth = window.innerWidth;
+
+/*
+On narrow screens the page is much taller than it is wide,
+so a fully random entry side could start the first flight
+far below the fold. Force the very first flight to enter
+from the top there, so the bee is visible without scrolling.
+*/
+let isFirstFlight = true;
+const MOBILE_BREAKPOINT = 700;
 
 const activeDashes = new Map();
 
@@ -92,6 +135,23 @@ svg.appendChild(routePath);
 
 function randomBetween(min, max) {
   return min + Math.random() * (max - min);
+}
+
+
+/*
+Reads the --bee-anchor-x / --bee-anchor-y custom properties
+from home.css, so the translate offset below always matches
+whatever transform-origin is currently using — tunable live
+in DevTools without the pivot and the anchor drifting apart.
+*/
+function getAnchorPercent(propertyName, fallback) {
+  const raw = getComputedStyle(bee)
+    .getPropertyValue(propertyName)
+    .trim();
+
+  const parsed = parseFloat(raw);
+
+  return Number.isFinite(parsed) ? parsed : fallback;
 }
 
 
@@ -129,6 +189,86 @@ function getRandomSidePoint(
 }
 
 
+/*
+Exact tangent direction of a cubic Bezier at parameter t
+(0 = start, 1 = end), in degrees. Used to vet a candidate
+route before committing to it — cheap since it's plain math,
+no DOM/SVG measurement involved.
+*/
+function cubicTangentAngle(
+  p0,
+  p1,
+  p2,
+  p3,
+  t
+) {
+  const mt = 1 - t;
+
+  const dx =
+    3 * mt * mt * (p1.x - p0.x) +
+    6 * mt * t * (p2.x - p1.x) +
+    3 * t * t * (p3.x - p2.x);
+
+  const dy =
+    3 * mt * mt * (p1.y - p0.y) +
+    6 * mt * t * (p2.y - p1.y) +
+    3 * t * t * (p3.y - p2.y);
+
+  return Math.atan2(dy, dx) * (180 / Math.PI);
+}
+
+
+/*
+Rejects routes that would need a sharp overall turn or that
+pass too close to straight up/down at any sampled point.
+*/
+function isRouteHeadingSafe(
+  start,
+  controlOne,
+  controlTwo,
+  end
+) {
+  const samples = [0, 0.25, 0.5, 0.75, 1].map(
+    (t) =>
+      cubicTangentAngle(
+        start,
+        controlOne,
+        controlTwo,
+        end,
+        t
+      )
+  );
+
+  // Unwrap so consecutive samples don't jump by ±360.
+  const unwrapped = [samples[0]];
+
+  for (let i = 1; i < samples.length; i++) {
+    let angle = samples[i];
+    const previous = unwrapped[i - 1];
+
+    while (angle - previous > 180) angle -= 360;
+    while (angle - previous < -180) angle += 360;
+
+    unwrapped.push(angle);
+  }
+
+  const sweep =
+    Math.max(...unwrapped) - Math.min(...unwrapped);
+
+  if (sweep > MAX_HEADING_SWEEP) {
+    return false;
+  }
+
+  return !samples.some((angle) => {
+    const normalized = ((angle % 180) + 180) % 180;
+    return (
+      Math.abs(normalized - 90) <
+      MIN_ANGLE_FROM_VERTICAL
+    );
+  });
+}
+
+
 /* ---------------------------------
    Create random curved route
 --------------------------------- */
@@ -143,55 +283,85 @@ function createRoute() {
     `0 0 ${width} ${height}`
   );
 
-  const startSide = Math.floor(
-    Math.random() * 4
-  );
+  const forceTopStart =
+    isFirstFlight &&
+    width <= MOBILE_BREAKPOINT;
 
-  let endSide = Math.floor(
-    Math.random() * 4
-  );
+  isFirstFlight = false;
 
-  while (endSide === startSide) {
-    endSide = Math.floor(
+  let start;
+  let end;
+  let controlOne;
+  let controlTwo;
+
+  for (
+    let attempt = 0;
+    attempt < MAX_ROUTE_ATTEMPTS;
+    attempt++
+  ) {
+    const startSide = forceTopStart
+      ? 0 // top
+      : Math.floor(Math.random() * 4);
+
+    let endSide = Math.floor(
       Math.random() * 4
     );
+
+    while (endSide === startSide) {
+      endSide = Math.floor(
+        Math.random() * 4
+      );
+    }
+
+    start = getRandomSidePoint(
+      startSide,
+      width,
+      height,
+      margin
+    );
+
+    end = getRandomSidePoint(
+      endSide,
+      width,
+      height,
+      margin
+    );
+
+    controlOne = {
+      x: randomBetween(
+        width * 0.1,
+        width * 0.9
+      ),
+      y: randomBetween(
+        height * 0.08,
+        height * 0.92
+      )
+    };
+
+    controlTwo = {
+      x: randomBetween(
+        width * 0.1,
+        width * 0.9
+      ),
+      y: randomBetween(
+        height * 0.08,
+        height * 0.92
+      )
+    };
+
+    if (
+      isRouteHeadingSafe(
+        start,
+        controlOne,
+        controlTwo,
+        end
+      )
+    ) {
+      break;
+    }
+
+    // Otherwise: loop and try a fresh random route.
   }
-
-  const start = getRandomSidePoint(
-    startSide,
-    width,
-    height,
-    margin
-  );
-
-  const end = getRandomSidePoint(
-    endSide,
-    width,
-    height,
-    margin
-  );
-
-  const controlOne = {
-    x: randomBetween(
-      width * 0.1,
-      width * 0.9
-    ),
-    y: randomBetween(
-      height * 0.08,
-      height * 0.92
-    )
-  };
-
-  const controlTwo = {
-    x: randomBetween(
-      width * 0.1,
-      width * 0.9
-    ),
-    y: randomBetween(
-      height * 0.08,
-      height * 0.92
-    )
-  };
 
   return `
     M ${start.x} ${start.y}
@@ -249,7 +419,7 @@ function createTrailDash(
   */
 
   dash.style.stroke = "var(--orange)";
-  dash.style.strokeWidth = "1.8";
+  dash.style.strokeWidth = DASH_THICKNESS;
   dash.style.strokeLinecap = "round";
   dash.style.opacity = "0.5";
 
@@ -298,8 +468,13 @@ function updateTrail(
   currentDistance,
   totalLength
 ) {
+  const targetDistance = Math.max(
+    currentDistance - TRAIL_GAP,
+    0
+  );
+
   while (
-    currentDistance - lastDashDistance >=
+    targetDistance - lastDashDistance >=
     DASH_SPACING
   ) {
     lastDashDistance += DASH_SPACING;
@@ -476,13 +651,23 @@ function startFlight() {
     it remains tangent to the route.
     */
 
+    const anchorX = getAnchorPercent(
+      "--bee-anchor-x",
+      50
+    );
+
+    const anchorY = getAnchorPercent(
+      "--bee-anchor-y",
+      50
+    );
+
     bee.style.transform = `
       translate3d(
         ${point.x}px,
         ${point.y}px,
         0
       )
-      translate(-47%, -50%)
+      translate(${-anchorX}%, ${-anchorY}%)
       rotate(${beeAngle}deg)
     `;
 
@@ -555,12 +740,30 @@ document.addEventListener(
 window.addEventListener(
   "resize",
   () => {
+    const currentWidth = window.innerWidth;
+
+    if (currentWidth !== lastViewportWidth) {
+      /*
+      A real resize is happening (as opposed to a mobile
+      address-bar height wobble) — hide the bee right away
+      instead of waiting for the debounce below.
+      */
+      clearTimeout(nextFlightTimer);
+      stopFlight();
+    }
+
     clearTimeout(resizeTimer);
 
     resizeTimer = window.setTimeout(
       () => {
-        clearTimeout(nextFlightTimer);
-        stopFlight();
+        const settledWidth = window.innerWidth;
+
+        if (settledWidth === lastViewportWidth) {
+          // Height-only change (mobile address bar on scroll) — ignore.
+          return;
+        }
+
+        lastViewportWidth = settledWidth;
 
         if (!reducedMotion.matches) {
           scheduleNextFlight(1200);

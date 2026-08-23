@@ -1,6 +1,6 @@
-@import url(
-  "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap"
-);
+/* Space Grotesk is loaded via <link> in the HTML head,
+   not @import, so it starts fetching immediately instead
+   of waiting on this stylesheet to load first. */
 
 
 /* =================================================
@@ -20,15 +20,15 @@
     sans-serif;
 
   /* Main column */
-  --column-width: 760px;
+  --column-width: 980px;
   --page-gutter: 36px;
 
   /* Page spacing */
-  --content-top: 70px;
+  --content-top: 100px;
   --content-bottom: 120px;
 
   /* ARGE FC title */
-  --main-title-size: clamp(72px, 8vw, 118px);
+  --main-title-size: clamp(84px, 6.2vw, 150px);
 
   /* Edition title */
   --edition-title-size: clamp(18px, 2.1vw, 28px);
@@ -248,21 +248,18 @@ h1 {
   font-size: var(--main-title-size);
   font-weight: 700;
   line-height: 0.82;
-  letter-spacing: -0.055em;
+  letter-spacing: 0;
 }
 
 .back-link {
   display: inline-block;
 
-  transition:
-    color 180ms ease,
-    transform 380ms cubic-bezier(.22, 1, .36, 1);
+  transition: color 180ms ease;
 }
 
 .back-link:hover,
 .back-link:focus-visible {
   color: var(--orange);
-  transform: translateX(6px);
 }
 
 .back-link:focus-visible {
@@ -298,6 +295,7 @@ h2 {
 
 .edition-image {
   margin: 0;
+  overflow: visible;
 }
 
 .edition-image + .edition-image {
@@ -306,16 +304,20 @@ h2 {
 
 .image-frame {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 
   background-color: var(--grey);
 }
 
 .team-image {
-  display: block;
+  position: relative;
+  z-index: 1;
 
+  display: block;
   width: 100%;
   height: auto;
+
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.25);
 }
 
 
@@ -324,7 +326,7 @@ h2 {
 ================================================= */
 
 .edition-note {
-  max-width: 700px;
+  max-width: var(--column-width);
 
   margin-top: clamp(30px, 4vw, 48px);
   margin-bottom: clamp(42px, 6vw, 72px);
@@ -413,12 +415,12 @@ h2 {
    TABLET
 ================================================= */
 
-@media (max-width: 1000px) and (min-width: 701px) {
+@media (max-width: 1180px) and (min-width: 701px) {
   :root {
-    --column-width: 680px;
+    --column-width: 760px;
     --page-gutter: clamp(40px, 7vw, 70px);
 
-    --main-title-size: clamp(70px, 10vw, 105px);
+    --content-top: 90px;
 
     --edition-title-size: clamp(18px, 2.7vw, 26px);
     --note-size: clamp(19px, 2.7vw, 23px);
@@ -438,16 +440,15 @@ h2 {
     --column-width: 560px;
     --page-gutter: clamp(26px, 7vw, 40px);
 
-    --content-top: 52px;
+    --content-top: 54px;
     --content-bottom: 100px;
 
-    --main-title-size: clamp(62px, 18vw, 84px);
+    --main-title-size: clamp(64px, 18.5vw, 84px);
 
-    /* Keeps the complete edition name on one line */
     --edition-title-size: clamp(15px, 4.4vw, 19px);
     --edition-title-line-height: 1;
 
-    --note-size: clamp(18px, 5vw, 20px);
+    --note-size: clamp(20px, 5.5vw, 23px);
     --note-line-height: 1.42;
 
     --footer-size: clamp(10px, 3vw, 12px);
@@ -503,7 +504,8 @@ h2 {
 ================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .back-link {
+  .back-link,
+  .team-image {
     transition: none;
   }
 }
