@@ -26,6 +26,11 @@
     content="width=device-width, initial-scale=1, viewport-fit=cover"
   >
 
+  <!-- Static green (the splash's resting color), not synced to
+       the orange-to-green animation: Safari reads theme-color
+       once at load and doesn't reliably react to later JS
+       changes, so animating it was never actually taking
+       effect on the notch/toolbar area anyway. -->
   <meta
     name="theme-color"
     content="#195c33"
@@ -47,12 +52,12 @@
   >
   <meta property="og:image" content="https://argefc.com/resources/og-image.jpg">
 
-  <!-- Prevents a background flash before style.css loads -->
+  <!-- Prevents a background flash before style.css loads. Only
+       body gets a color — html is deliberately left unset here
+       too, so the browser keeps falling back to body's color
+       for the safe-area strips (see the comment on html in
+       style.css). -->
   <style>
-    html {
-      background-color: #195c33;
-    }
-
     body {
       background-color: #de7628;
     }

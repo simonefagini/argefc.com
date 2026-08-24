@@ -24,7 +24,13 @@ html {
   height: 100%;
   margin: 0;
 
-  background-color: var(--green);
+  /* No background-color here on purpose: leaving it unset lets
+     the browser fall back to body's background for "the canvas"
+     (the area outside normal content boxes — overscroll bounce,
+     and the safe-area strips under the notch/home indicator).
+     That makes the notch/home-indicator strips track body's own
+     orange-to-green animation automatically, with no duplicate
+     animation or timing to keep in sync by hand. */
 }
 
 body {
