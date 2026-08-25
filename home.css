@@ -177,20 +177,6 @@ p:last-child {
   font-style: italic;
 }
 
-.founder {
-  font-size: 0.38em;
-  color: var(--grey);
-  vertical-align: super;
-  letter-spacing: 0;
-  white-space: nowrap;
-  margin-left: 0.22em;
-}
-
-.fm {
-  color: var(--grey);
-  font-size: 1em;
-}
-
 /* =================================================
    Dictionary definition
 ================================================= */
