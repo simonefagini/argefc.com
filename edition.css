@@ -251,6 +251,15 @@ h1 {
   letter-spacing: 0;
 }
 
+.title-logo {
+  display: block;
+
+  height: 1.29em;
+  width: auto;
+  aspect-ratio: 404.99 / 137.17;
+  margin-left: -0.265em;
+}
+
 .back-link {
   display: inline-block;
 

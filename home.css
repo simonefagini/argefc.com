@@ -148,6 +148,15 @@ h1 {
   letter-spacing: var(--title-letter-spacing);
 }
 
+.title-logo {
+  display: block;
+
+  height: 1.29em;
+  width: auto;
+  aspect-ratio: 404.99 / 137.17;
+  margin-left: -0.265em;
+}
+
 h2 {
   margin-bottom: 28px;
 
