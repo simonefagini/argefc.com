@@ -128,6 +128,10 @@ section {
   margin-bottom: 0;
 }
 
+.friends-section {
+  margin-bottom: calc(var(--section-bottom) * 1.5);
+}
+
 
 /* =================================================
    Typography
@@ -146,6 +150,15 @@ h1 {
   font-weight: var(--title-weight);
   line-height: var(--title-line-height);
   letter-spacing: var(--title-letter-spacing);
+}
+
+.title-logo {
+  display: block;
+
+  height: 1.29em;
+  width: auto;
+  aspect-ratio: 404.99 / 137.17;
+  margin-left: -0.265em;
 }
 
 h2 {
