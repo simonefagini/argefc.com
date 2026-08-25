@@ -243,7 +243,7 @@ h1 {
   margin:
     0
     0
-    clamp(90px, 13vw, 170px);
+    clamp(45px, 6.5vw, 85px);
 
   font-size: var(--main-title-size);
   font-weight: 700;
@@ -522,7 +522,7 @@ h2 {
   }
 
   h1 {
-    margin-bottom: 90px;
+    margin-bottom: 45px;
   }
 
   .edition-header {
