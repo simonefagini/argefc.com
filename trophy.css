@@ -1,0 +1,353 @@
+/* Space Grotesk is loaded via <link> in the HTML head,
+   not @import, so it starts fetching immediately instead
+   of waiting on this stylesheet to load first. */
+
+
+/* =================================================
+   CONTROLS
+================================================= */
+
+:root {
+  --green: #195c33;
+  --orange: #de7628;
+  --white: #ffffff;
+  --grey: #b7b7b7;
+
+  --font-family:
+    "Space Grotesk",
+    Arial,
+    sans-serif;
+
+  /* Main column */
+  --column-width: 980px;
+  --page-gutter: 36px;
+
+  /* Page spacing */
+  --content-top: 100px;
+  --content-bottom: 120px;
+
+  /* Page title */
+  --page-title-size: clamp(20px, 2.2vw, 30px);
+
+  /* Note */
+  --note-size: clamp(19px, 2vw, 25px);
+  --note-line-height: 1.45;
+
+  /* Footer */
+  --footer-size: 13px;
+  --footer-padding: 9px;
+}
+
+
+/* =================================================
+   BASE
+================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  background-color: var(--white);
+}
+
+body {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+
+  overflow-x: hidden;
+
+  color: var(--green);
+  background-color: var(--white);
+
+  font-family: var(--font-family);
+  font-weight: 600;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* =================================================
+   CONTENT
+================================================= */
+
+.content {
+  position: relative;
+  z-index: 2;
+
+  flex: 1;
+
+  width: min(
+    calc(100% - (var(--page-gutter) * 2)),
+    var(--column-width)
+  );
+
+  margin-inline: auto;
+
+  padding:
+    var(--content-top)
+    0
+    var(--content-bottom);
+}
+
+
+/* =================================================
+   ARGE FC TITLE
+================================================= */
+
+h1 {
+  margin:
+    0
+    0
+    clamp(45px, 6.5vw, 85px);
+
+  font-size: clamp(84px, 6.2vw, 150px);
+  font-weight: 700;
+  line-height: 0.82;
+  letter-spacing: 0;
+}
+
+.title-logo {
+  display: block;
+
+  height: 1.29em;
+  width: auto;
+  aspect-ratio: 404.99 / 137.17;
+  margin-left: -0.265em;
+}
+
+.back-link {
+  display: inline-block;
+
+  transition: color 180ms ease;
+}
+
+.back-link:hover,
+.back-link:focus-visible {
+  color: var(--orange);
+}
+
+.back-link:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 6px;
+}
+
+
+/* =================================================
+   PAGE HEADER
+================================================= */
+
+.trophy-header {
+  margin-bottom: clamp(30px, 4vw, 48px);
+}
+
+h2 {
+  max-width: 100%;
+  margin: 0;
+
+  font-size: var(--page-title-size);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+
+/* =================================================
+   TROPHY STAGE
+
+   Same width as an edition team photo (.image-frame in
+   edition.css) — full column width, no background of its own —
+   but 8:5 instead of the photo's 3:4 aspect ratio.
+================================================= */
+
+.trophy-stage {
+  margin: 0;
+}
+
+.trophy-model {
+  display: block;
+
+  width: 100%;
+
+  /* model-viewer's own shadow-DOM style sets an explicit
+     height: 150px default (to mirror <canvas>'s intrinsic size).
+     aspect-ratio only fills in a dimension left auto — since we
+     never contested height ourselves, that 150px default just
+     won outright and aspect-ratio had nothing to compute. Setting
+     height: auto here reclaims the property so aspect-ratio can
+     actually derive it from width. */
+  height: auto;
+  aspect-ratio: 8 / 5;
+}
+
+
+/* =================================================
+   TROPHY NOTE
+================================================= */
+
+.trophy-note {
+  max-width: var(--column-width);
+
+  margin-top: clamp(30px, 4vw, 48px);
+}
+
+.trophy-note p {
+  margin: 0;
+
+  color: var(--grey);
+
+  font-size: var(--note-size);
+  font-weight: 600;
+  line-height: var(--note-line-height);
+  letter-spacing: -0.02em;
+
+  text-wrap: pretty;
+}
+
+.note-link {
+  color: var(--green);
+}
+
+.note-link:hover,
+.note-link:focus-visible {
+  color: var(--orange);
+}
+
+.note-link:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 3px;
+}
+
+
+/* =================================================
+   FOOTER
+================================================= */
+
+.site-footer {
+  position: relative;
+  z-index: 3;
+
+  width: 100%;
+
+  padding:
+    var(--footer-padding)
+    0;
+
+  color: var(--white);
+  background-color: var(--grey);
+}
+
+.site-footer p {
+  width: min(
+    calc(100% - (var(--page-gutter) * 2)),
+    var(--column-width)
+  );
+
+  margin: 0 auto;
+
+  color: inherit;
+
+  font-size: var(--footer-size);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+
+  text-align: center;
+}
+
+.footer-link {
+  color: var(--white);
+}
+
+.footer-link:hover,
+.footer-link:focus-visible {
+  color: var(--green);
+}
+
+.footer-link:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 3px;
+}
+
+
+/* =================================================
+   TABLET
+================================================= */
+
+@media (max-width: 1180px) and (min-width: 701px) {
+  :root {
+    --column-width: 760px;
+    --page-gutter: clamp(40px, 7vw, 70px);
+
+    --content-top: 90px;
+
+    --page-title-size: clamp(19px, 2.7vw, 27px);
+    --note-size: clamp(19px, 2.7vw, 23px);
+  }
+}
+
+
+/* =================================================
+   MOBILE
+================================================= */
+
+@media (max-width: 700px) {
+  :root {
+    --column-width: 560px;
+    --page-gutter: clamp(26px, 7vw, 40px);
+
+    --content-top: 54px;
+    --content-bottom: 100px;
+
+    --page-title-size: clamp(16px, 4.4vw, 20px);
+
+    --note-size: clamp(20px, 5.5vw, 23px);
+    --note-line-height: 1.42;
+
+    --footer-size: clamp(10px, 3vw, 12px);
+    --footer-padding: 11px;
+  }
+
+  h1 {
+    margin-bottom: 45px;
+  }
+
+  .trophy-header {
+    margin-bottom: 28px;
+  }
+
+  .site-footer {
+    padding:
+      var(--footer-padding)
+      0
+      calc(
+        var(--footer-padding) +
+        env(safe-area-inset-bottom)
+      );
+  }
+
+  .site-footer p {
+    text-wrap: balance;
+  }
+}
+
+
+/* =================================================
+   REDUCED MOTION
+================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .back-link {
+    transition: none;
+  }
+}
