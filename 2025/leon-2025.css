@@ -12,7 +12,7 @@
   --orange: #de7628;
   --white: #ffffff;
   --grey: #b7b7b7;
-  --yellow: #f0c52e;
+  --black: #000000;
 
   --font-family:
     "Space Grotesk",
@@ -27,25 +27,20 @@
   --content-top: 100px;
   --content-bottom: 120px;
 
-  /* ARGE FC title */
-  --main-title-size: clamp(84px, 6.2vw, 150px);
+  /* Page title */
+  --page-title-size: clamp(20px, 2.2vw, 30px);
 
-  /* Edition title */
-  --edition-title-size: clamp(18px, 2.1vw, 28px);
-  --edition-title-line-height: 1;
-
-  /* Edition note */
+  /* Gallery note */
   --note-size: clamp(19px, 2vw, 25px);
   --note-line-height: 1.45;
+
+  /* Gallery grid */
+  --grid-columns: 4;
+  --grid-gap: 14px;
 
   /* Footer */
   --footer-size: 13px;
   --footer-padding: 9px;
-
-  /* Confetti */
-  --confetti-opacity: 0.75;
-  --confetti-width: 8px;
-  --confetti-height: 15px;
 }
 
 
@@ -86,128 +81,8 @@ a {
   text-decoration: none;
 }
 
-img {
-  display: block;
-  max-width: 100%;
-}
-
-
-/* =================================================
-   CONFETTI
-================================================= */
-
-.confetti {
-  display: none;
-}
-
-body.is-winner .confetti {
-  position: fixed;
-  z-index: 0;
-  inset: 0;
-
-  display: block;
-
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.confetti span {
-  position: absolute;
-
-  top: -40px;
-  left: var(--x);
-
-  width: var(--confetti-width);
-  height: var(--confetti-height);
-
-  opacity: var(--confetti-opacity);
-  background-color: var(--orange);
-
-  animation:
-    confetti-fall
-    var(--duration)
-    linear
-    var(--delay)
-    infinite;
-
-  will-change: transform;
-}
-
-
-/* Confetti colors */
-
-.confetti span:nth-child(3n) {
-  background-color: var(--green);
-}
-
-.confetti span:nth-child(5n) {
-  background-color: var(--grey);
-}
-
-.confetti span:nth-child(7n) {
-  background-color: var(--yellow);
-}
-
-
-/* Confetti shapes */
-
-.confetti span:nth-child(2n) {
-  width: 13px;
-  height: 6px;
-}
-
-.confetti span:nth-child(4n) {
-  width: 5px;
-  height: 18px;
-}
-
-.confetti span:nth-child(6n) {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-.confetti span:nth-child(9n) {
-  border-radius: 999px;
-}
-
-
-@keyframes confetti-fall {
-  0% {
-    transform:
-      translate3d(0, -8vh, 0)
-      rotate(0deg);
-  }
-
-  20% {
-    transform:
-      translate3d(28px, 20vh, 0)
-      rotate(calc(var(--rotation) * 0.2));
-  }
-
-  40% {
-    transform:
-      translate3d(-20px, 44vh, 0)
-      rotate(calc(var(--rotation) * 0.4));
-  }
-
-  60% {
-    transform:
-      translate3d(24px, 68vh, 0)
-      rotate(calc(var(--rotation) * 0.6));
-  }
-
-  80% {
-    transform:
-      translate3d(-16px, 91vh, 0)
-      rotate(calc(var(--rotation) * 0.8));
-  }
-
-  100% {
-    transform:
-      translate3d(12px, 115vh, 0)
-      rotate(var(--rotation));
-  }
+button {
+  font-family: inherit;
 }
 
 
@@ -245,7 +120,7 @@ h1 {
     0
     clamp(45px, 6.5vw, 85px);
 
-  font-size: var(--main-title-size);
+  font-size: clamp(84px, 6.2vw, 150px);
   font-weight: 700;
   line-height: 0.82;
   letter-spacing: 0;
@@ -278,10 +153,10 @@ h1 {
 
 
 /* =================================================
-   EDITION TITLE
+   PAGE HEADER
 ================================================= */
 
-.edition-header {
+.gallery-header {
   margin-bottom: clamp(30px, 4vw, 48px);
 }
 
@@ -289,112 +164,24 @@ h2 {
   max-width: 100%;
   margin: 0;
 
-  font-size: var(--edition-title-size);
+  font-size: var(--page-title-size);
   font-weight: 700;
-  line-height: var(--edition-title-line-height);
+  line-height: 1;
   letter-spacing: -0.025em;
-
-  white-space: nowrap;
 }
 
 
 /* =================================================
-   TEAM IMAGES
+   GALLERY NOTE
 ================================================= */
 
-.edition-image {
-  margin: 0;
-  overflow: visible;
-}
-
-.edition-image + .edition-image {
-  margin-top: clamp(30px, 5vw, 60px);
-}
-
-.image-frame {
-  position: relative;
-  overflow: visible;
-
-  background-color: var(--grey);
-}
-
-.team-image {
-  position: relative;
-  z-index: 1;
-
-  display: block;
-  width: 100%;
-  height: auto;
-
-  box-shadow: 0 0px 5px rgba(0, 0, 0, 0.25);
-  transition: box-shadow 200ms ease;
-
-  /* Long-press reveals name labels (see edition-labels.js)
-     instead of iOS Safari's native save/copy/share callout or
-     its separate lift-to-drag/copy gesture on images. */
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-user-drag: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .image-frame:hover .team-image {
-    box-shadow: none;
-  }
-}
-
-.image-frame.is-revealed .team-image {
-  box-shadow: none;
-}
-
-
-/* =================================================
-   TEAM IMAGE LABELS
-
-   Optional per-edition SVG overlay naming the people in the
-   photo. Revealed on hover on desktop (long-press.js handles
-   the touch equivalent by toggling is-revealed, since touch
-   devices have no hover state at all).
-================================================= */
-
-.edition-labels {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-
-  width: 100%;
-  height: 100%;
-
-  opacity: 0;
-  pointer-events: none;
-
-  transition: opacity 200ms ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .image-frame:hover .edition-labels {
-    opacity: 1;
-  }
-}
-
-.image-frame.is-revealed .edition-labels {
-  opacity: 1;
-}
-
-
-/* =================================================
-   EDITION NOTE
-================================================= */
-
-.edition-note {
+.gallery-note {
   max-width: var(--column-width);
 
-  margin-top: clamp(30px, 4vw, 48px);
-  margin-bottom: clamp(42px, 6vw, 72px);
+  margin-bottom: clamp(30px, 4vw, 48px);
 }
 
-.edition-note p {
+.gallery-note p {
   margin: 0;
 
   color: var(--grey);
@@ -419,6 +206,154 @@ h2 {
 .note-link:focus-visible {
   outline: 1px solid currentColor;
   outline-offset: 3px;
+}
+
+
+/* =================================================
+   GALLERY GRID
+
+   4 columns wide to match roughly 20 photos in a tidy
+   block; tiles crop to 3:4 (same ratio as an edition team
+   photo) so the couple of landscape/square shots in the
+   mix still sit flush in the grid.
+================================================= */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  gap: var(--grid-gap);
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.gallery-item {
+  display: block;
+
+  width: 100%;
+  padding: 0;
+  border: 0;
+
+  aspect-ratio: 3 / 4;
+
+  cursor: pointer;
+  background: none;
+
+  overflow: hidden;
+}
+
+.gallery-item img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform 240ms ease;
+}
+
+.gallery-item:hover img,
+.gallery-item:focus-visible img {
+  transform: scale(1.04);
+}
+
+.gallery-item:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+
+
+/* =================================================
+   LIGHTBOX
+
+   One shared overlay filled in by JS on click, rather than
+   a page per image. Kept out of the content column entirely
+   (position: fixed) and toggled with the [hidden] attribute.
+================================================= */
+
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: clamp(20px, 6vw, 60px);
+
+  background-color: rgba(0, 0, 0, 0.92);
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 100%;
+
+  object-fit: contain;
+}
+
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+
+  border: 0;
+
+  color: var(--white);
+  background: none;
+
+  font-family: var(--font-family);
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition: color 180ms ease;
+}
+
+.lightbox-close:hover,
+.lightbox-close:focus-visible,
+.lightbox-prev:hover,
+.lightbox-prev:focus-visible,
+.lightbox-next:hover,
+.lightbox-next:focus-visible {
+  color: var(--orange);
+}
+
+.lightbox-close:focus-visible,
+.lightbox-prev:focus-visible,
+.lightbox-next:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
+}
+
+.lightbox-close {
+  top: clamp(14px, 3vw, 28px);
+  right: clamp(14px, 3vw, 28px);
+
+  font-size: clamp(28px, 4vw, 40px);
+}
+
+.lightbox-prev,
+.lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+
+  font-size: clamp(36px, 6vw, 56px);
+}
+
+.lightbox-prev {
+  left: clamp(6px, 2vw, 24px);
+}
+
+.lightbox-next {
+  right: clamp(6px, 2vw, 24px);
 }
 
 
@@ -484,11 +419,8 @@ h2 {
 
     --content-top: 90px;
 
-    --edition-title-size: clamp(18px, 2.7vw, 26px);
+    --page-title-size: clamp(19px, 2.7vw, 27px);
     --note-size: clamp(19px, 2.7vw, 23px);
-
-    --confetti-width: 7px;
-    --confetti-height: 13px;
   }
 }
 
@@ -505,33 +437,29 @@ h2 {
     --content-top: 54px;
     --content-bottom: 100px;
 
-    --main-title-size: clamp(64px, 18.5vw, 84px);
-
-    --edition-title-size: clamp(15px, 4.4vw, 19px);
-    --edition-title-line-height: 1;
+    --page-title-size: clamp(16px, 4.4vw, 20px);
 
     --note-size: clamp(20px, 5.5vw, 23px);
     --note-line-height: 1.42;
 
+    --grid-columns: 2;
+    --grid-gap: 10px;
+
     --footer-size: clamp(10px, 3vw, 12px);
     --footer-padding: 11px;
-
-    --confetti-opacity: 0.58;
-    --confetti-width: 5px;
-    --confetti-height: 11px;
   }
 
   h1 {
     margin-bottom: 45px;
   }
 
-  .edition-header {
+  .gallery-header {
     margin-bottom: 28px;
   }
 
-  .edition-note {
-    margin-top: 30px;
-    margin-bottom: 42px;
+  .lightbox-prev,
+  .lightbox-next {
+    font-size: clamp(30px, 9vw, 44px);
   }
 
   .site-footer {
@@ -551,23 +479,16 @@ h2 {
 
 
 /* =================================================
-   VERY NARROW PHONES
-================================================= */
-
-@media (max-width: 360px) {
-  :root {
-    --edition-title-size: 14px;
-  }
-}
-
-
-/* =================================================
    REDUCED MOTION
 ================================================= */
 
 @media (prefers-reduced-motion: reduce) {
   .back-link,
-  .team-image {
+  .gallery-item img,
+  .lightbox-close,
+  .lightbox-prev,
+  .lightbox-next,
+  .footer-link {
     transition: none;
   }
 }

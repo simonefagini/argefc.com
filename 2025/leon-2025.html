@@ -10,7 +10,7 @@
 
   <meta name="theme-color" content="#ffffff">
 
-  <title>S AM Cup by Halter 2023 — ARGE FC</title>
+  <title>S AM Cup 2025 — ARGE FC</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,8 +19,7 @@
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap"
   >
 
-  <!-- edition.css is in the repository root -->
-  <link rel="stylesheet" href="../edition.css">
+  <link rel="stylesheet" href="./leon-2025.css">
 
   <link
     rel="icon"
@@ -53,65 +52,62 @@
     </h1>
 
 
-    <header class="edition-header">
-      <h2>S AM Cup by Halter 2023</h2>
+    <header class="gallery-header">
+      <h2>S&nbsp;AM&nbsp;Cup 2025</h2>
     </header>
 
 
-    <figure class="edition-image">
-      <div class="image-frame">
-        <img
-          class="team-image"
-          src="./sam-cup-2023-team.webp"
-          alt="ARGE FC at the S AM Cup by Halter 2023"
-          width="1695"
-          height="1198"
-          decoding="async"
-          draggable="false"
-        >
-        <img
-          class="edition-labels"
-          src="./sam-cup-2023-names.svg"
-          alt=""
-          aria-hidden="true"
-          width="1695"
-          height="1198"
-        >
-      </div>
-    </figure>
-
-
-    <section class="edition-note">
+    <section class="gallery-note">
       <p>
-        In its second S AM Cup, ARGE FC debuted with its first visual identity, an all-black
-        jersey designed by
         <a
           class="note-link"
-          href="https://raphaelkadid.com"
+          href="https://www.leonfaust.net/"
           target="_blank"
           rel="noopener"
         >
-          Raphael Kadid.
-        </a> The QR code led to a first website prototype.
+          Leon,
+        </a>
+        after taking his boots off, shot these amazing photos of our players.
       </p>
     </section>
 
 
-    <!--
-    Additional photographs can be added by duplicating this block:
-
-    <figure class="edition-image">
-      <div class="image-frame">
-        <img
-          class="team-image"
-          src="./another-photo.jpg"
-          alt="ARGE FC at the S AM Cup by Halter 2023"
-        >
-      </div>
-    </figure>
-    -->
+    <ul class="gallery-grid">
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/01.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/02.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/03.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/04.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/05.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/06.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/07.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/08.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/09.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/10.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/11.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/12.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/13.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/14.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/15.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/16.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/17.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/18.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/19.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/20.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/21.jpg" alt="" loading="lazy"></button></li>
+      <li><button type="button" class="gallery-item"><img src="./leon-2025/22.jpg" alt="" loading="lazy"></button></li>
+    </ul>
 
   </main>
+
+
+  <!-- Lightbox: one shared overlay, filled in by JS on click rather
+       than a page per image. Markup starts empty/hidden. -->
+  <div class="lightbox" hidden>
+    <button type="button" class="lightbox-close" aria-label="Close">&times;</button>
+    <button type="button" class="lightbox-prev" aria-label="Previous image">&lsaquo;</button>
+    <button type="button" class="lightbox-next" aria-label="Next image">&rsaquo;</button>
+    <img class="lightbox-image" src="" alt="">
+  </div>
 
 
   <footer class="site-footer">
@@ -142,7 +138,7 @@
     </p>
   </footer>
 
-  <script src="../edition-labels.js"></script>
+  <script src="./leon-2025.js"></script>
 
 </body>
 </html>
