@@ -11,6 +11,12 @@ instead: a fully diffuse/matte surface is lit by model-viewer's
 ordinary direct+ambient lighting, no environment map involved at
 all, so this side-steps the problem instead of depending on
 detecting it correctly.
+
+Turning off metalness alone still rendered black, though — the base
+color texture itself apparently isn't showing up either on affected
+devices. Rather than also chase that, the texture is dropped and
+replaced with a flat base color factor, so there's nothing left that
+depends on a texture sample or reflection working correctly at all.
 */
 
 const isTouchDevice = !window.matchMedia(
@@ -25,8 +31,15 @@ if (isTouchDevice) {
       const [material] = model.model.materials;
 
       if (material) {
-        material.pbrMetallicRoughness.setMetallicFactor(0);
-        material.pbrMetallicRoughness.setRoughnessFactor(1);
+        const { pbrMetallicRoughness } = material;
+
+        pbrMetallicRoughness.setMetallicFactor(0);
+        pbrMetallicRoughness.setRoughnessFactor(1);
+        pbrMetallicRoughness.baseColorTexture.setTexture(null);
+        // #848483
+        pbrMetallicRoughness.setBaseColorFactor(
+          [0.5176, 0.5176, 0.5137, 1]
+        );
       }
     });
   }
