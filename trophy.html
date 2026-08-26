@@ -82,15 +82,6 @@
 
 
     <figure class="trophy-stage">
-      <!-- environment-image="legacy": the cup's material is fully
-           metallic, so its look depends almost entirely on
-           reflected environment light rather than direct
-           lighting. model-viewer's default environment is
-           generated at runtime via half-float render targets,
-           which can silently fail on weaker/older mobile GPUs —
-           leaving a metallic object with nothing to reflect, i.e.
-           solid black. "legacy" swaps in model-viewer's simpler,
-           much more broadly compatible built-in lighting instead. -->
       <model-viewer
         class="trophy-model"
         src="/resources/sam-cup.glb"
@@ -101,7 +92,6 @@
         camera-orbit="90deg auto auto"
         tone-mapping="neutral"
         shadow-intensity="1"
-        environment-image="legacy"
       ></model-viewer>
     </figure>
 
