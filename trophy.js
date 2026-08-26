@@ -1,26 +1,33 @@
 /*
-The trophy's material is fully metallic, so its appearance comes
-almost entirely from reflected environment light rather than the
-base texture itself. model-viewer generates that environment map at
-runtime via half-float render targets, which some mobile GPUs/
-browsers (older iOS Safari included) fail to do — leaving a metal
-surface with nothing to reflect, i.e. solid black, even once the
-geometry and textures themselves are rendering fine.
-
-WebGL2 doesn't have this failure mode, so this only steps in where
-WebGL2 itself isn't available, swapping in model-viewer's simpler
-"legacy" lighting there instead of the richer generated environment —
-leaving the desktop appearance untouched.
+The trophy's material is fully metallic, so its appearance normally
+comes almost entirely from reflected environment light rather than
+direct lighting. model-viewer generates that environment map at
+runtime, and that generation has proven unreliable across mobile
+GPUs/browsers (see git history for two earlier attempts at pinning
+down exactly why and gating around it — neither fixed it). Rather
+than keep chasing the specific GPU/driver quirk, touch devices get
+the material's metalness dialled to zero and roughness maxed out
+instead: a fully diffuse/matte surface is lit by model-viewer's
+ordinary direct+ambient lighting, no environment map involved at
+all, so this side-steps the problem instead of depending on
+detecting it correctly.
 */
 
-const supportsWebGL2 = Boolean(
-  document.createElement("canvas").getContext("webgl2")
-);
+const isTouchDevice = !window.matchMedia(
+  "(hover: hover) and (pointer: fine)"
+).matches;
 
-if (!supportsWebGL2) {
+if (isTouchDevice) {
   const model = document.querySelector(".trophy-model");
 
   if (model) {
-    model.setAttribute("environment-image", "legacy");
+    model.addEventListener("load", () => {
+      const [material] = model.model.materials;
+
+      if (material) {
+        material.pbrMetallicRoughness.setMetallicFactor(0);
+        material.pbrMetallicRoughness.setRoughnessFactor(1);
+      }
+    });
   }
 }
