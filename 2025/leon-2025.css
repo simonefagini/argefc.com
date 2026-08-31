@@ -28,7 +28,7 @@
   --content-bottom: 120px;
 
   /* Page title */
-  --page-title-size: clamp(20px, 2.2vw, 30px);
+  --page-title-size: clamp(18px, 2.1vw, 28px);
 
   /* Gallery note */
   --note-size: clamp(19px, 2vw, 25px);
@@ -419,7 +419,7 @@ h2 {
 
     --content-top: 90px;
 
-    --page-title-size: clamp(19px, 2.7vw, 27px);
+    --page-title-size: clamp(18px, 2.7vw, 26px);
     --note-size: clamp(19px, 2.7vw, 23px);
   }
 }
@@ -437,7 +437,7 @@ h2 {
     --content-top: 54px;
     --content-bottom: 100px;
 
-    --page-title-size: clamp(16px, 4.4vw, 20px);
+    --page-title-size: clamp(15px, 4.4vw, 19px);
 
     --note-size: clamp(20px, 5.5vw, 23px);
     --note-line-height: 1.42;

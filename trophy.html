@@ -26,6 +26,19 @@
   >
   <meta property="og:image" content="https://argefc.com/resources/sam-cup.png">
 
+  <!-- Prevents the title link from flashing the browser's
+       default blue before trophy.css loads (its logo SVG
+       uses fill="currentColor"). -->
+  <style>
+    body {
+      color: #195c33;
+    }
+
+    a {
+      color: inherit;
+    }
+  </style>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
