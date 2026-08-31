@@ -26,6 +26,9 @@
   --content-top: 100px;
   --content-bottom: 120px;
 
+  /* ARGE FC title */
+  --main-title-size: clamp(84px, 6.2vw, 150px);
+
   /* Page title */
   --page-title-size: clamp(18px, 2.1vw, 28px);
 
@@ -111,7 +114,7 @@ h1 {
     0
     clamp(45px, 6.5vw, 85px);
 
-  font-size: clamp(84px, 6.2vw, 150px);
+  font-size: var(--main-title-size);
   font-weight: 700;
   line-height: 0.82;
   letter-spacing: 0;
@@ -308,6 +311,8 @@ h2 {
 
     --content-top: 54px;
     --content-bottom: 100px;
+
+    --main-title-size: clamp(64px, 18.5vw, 84px);
 
     --page-title-size: clamp(15px, 4.4vw, 19px);
 
