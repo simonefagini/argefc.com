@@ -24,6 +24,8 @@ domain.
 ├── style.css / home.css / edition.css / 404.css
 ├── resources/              Shared assets (logo, icons, OG image)
 ├── CNAME                    Custom domain config for GitHub Pages
+├── .nojekyll                Disables Jekyll processing on GitHub Pages
+├── robots.txt / sitemap.xml  Crawler config
 └── 2022/ 2023/ 2024/ 2025/  One folder per S AM Cup edition, each with
                              its own edition<year>.html page and photo(s)
 ```
@@ -49,6 +51,11 @@ GitHub Pages' automatic `404.html` handling for unmatched routes — open
 
 Pushing to `main` deploys automatically via GitHub Pages. The `CNAME`
 file points the custom domain (`argefc.com`) at the repo.
+
+⚠️ `CNAME` gets silently wiped if GitHub Pages is ever disabled/re-enabled
+or the repo is recreated — if that happens, re-add a file named `CNAME`
+containing `argefc.com` and re-set the custom domain in the repo's Pages
+settings.
 
 ## Credits
 
