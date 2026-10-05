@@ -39,21 +39,50 @@ const TRAIL_LIFETIME = 3500;
 
 
 /*
-Distance between the dashes.
+Distance between the letters.
 */
-const DASH_SPACING = 20;
+const DASH_SPACING = 19;
 
 
 /*
-Length of each dash.
+The trail spells this out, one letter per mark, and starts
+over when it reaches the end. A space leaves a gap. Each
+letter is rotated to follow the path, but never upside down,
+so it always stays readable.
 */
-const DASH_LENGTH = 5;
+const TRAIL_TEXT =
+  "bbbbeeeeeeeebbbbeeeeeeeebbbeeeeee";
 
 
 /*
-Thickness of each dash.
+Trail style:
+"pattern" repeats TRAIL_TEXT behind the bee.
+"lead" is built so the trail always reads "b eeee" from left
+to right, whichever way the bee flies:
+  - flying right to left: one LEAD_LETTER travels just behind
+    the bee and TRAIL_LETTER is left behind it (bee b eeee);
+  - flying left to right: the first letter on screen is the
+    LEAD_LETTER, followed only by TRAIL_LETTER (b eeee bee).
 */
-const DASH_THICKNESS = 2.2;
+const TRAIL_MODE = "pattern";
+const LEAD_LETTER = "b";
+const TRAIL_LETTER = "e";
+
+
+/*
+"lead" mode spacing, in pixels along the path:
+LEAD_GAP is the distance between the bee and its first letter,
+LEAD_TRAIL_GAP the distance between the b and the newest e
+(right to left flights only).
+*/
+const LEAD_GAP = 13;
+const LEAD_TRAIL_GAP = 12;
+
+
+/*
+Size of each letter, in pixels.
+*/
+const TRAIL_FONT_SIZE = 15;
 
 
 /*
@@ -93,6 +122,19 @@ let endFlightTimer = null;
 let resizeTimer = null;
 
 let lastDashDistance = 0;
+
+/*
+Counts the letters drawn on screen in this flight. Flights start
+outside the viewport, so counting from the start of the route
+would spend the b's where nobody can see them.
+*/
+let visibleLetters = 0;
+
+/* The b that stays next to the bee in "lead" mode. */
+let leadLetter = null;
+
+/* Direction of the current flight, set when it starts. */
+let flightGoesRight = false;
 
 /*
 Mobile browsers change window.innerHeight (and fire "resize")
@@ -373,44 +415,56 @@ function createRoute() {
 
 
 /* ---------------------------------
-   Create one fading dash
+   Letters
 --------------------------------- */
 
-function createTrailDash(
+/*
+Angle of the path at a given distance, flipped when needed so
+the letter never reads upside down.
+*/
+function getLetterAngle(
   distance,
   totalLength
 ) {
-  const endDistance = Math.min(
-    distance,
-    totalLength
-  );
-
-  const startDistance = Math.max(
-    endDistance - DASH_LENGTH,
-    0
-  );
-
-  const startPoint =
+  const before =
     routePath.getPointAtLength(
-      startDistance
+      Math.max(distance - 5, 0)
     );
 
-  const endPoint =
+  const after =
     routePath.getPointAtLength(
-      endDistance
+      Math.min(distance + 5, totalLength)
     );
 
-  const dash = document.createElementNS(
+  let angle =
+    Math.atan2(
+      after.y - before.y,
+      after.x - before.x
+    ) *
+    (180 / Math.PI);
+
+  if (angle > 90) {
+    angle -= 180;
+  } else if (angle < -90) {
+    angle += 180;
+  }
+
+  return angle;
+}
+
+
+function createLetterElement(letter) {
+  const element = document.createElementNS(
     SVG_NAMESPACE,
-    "line"
+    "text"
   );
 
-  dash.classList.add("trail-dash");
+  element.classList.add("trail-dash");
 
-  dash.setAttribute("x1", startPoint.x);
-  dash.setAttribute("y1", startPoint.y);
-  dash.setAttribute("x2", endPoint.x);
-  dash.setAttribute("y2", endPoint.y);
+  element.textContent = letter;
+
+  element.setAttribute("text-anchor", "middle");
+  element.setAttribute("dominant-baseline", "central");
 
   /*
   These properties are also defined here,
@@ -418,9 +472,76 @@ function createTrailDash(
   is accidentally missing.
   */
 
-  dash.style.stroke = "var(--orange)";
-  dash.style.strokeWidth = DASH_THICKNESS;
-  dash.style.strokeLinecap = "round";
+  element.style.fill = "var(--orange)";
+  element.style.fontSize = TRAIL_FONT_SIZE + "px";
+  element.style.fontWeight = "700";
+
+  return element;
+}
+
+
+function placeLetter(
+  element,
+  point,
+  angle
+) {
+  element.setAttribute("x", point.x);
+  element.setAttribute("y", point.y);
+  element.setAttribute(
+    "transform",
+    `rotate(${angle} ${point.x} ${point.y})`
+  );
+}
+
+
+/* ---------------------------------
+   Create one fading letter
+--------------------------------- */
+
+function createTrailDash(
+  distance,
+  totalLength
+) {
+  const point =
+    routePath.getPointAtLength(
+      Math.min(distance, totalLength)
+    );
+
+  let letter = TRAIL_LETTER;
+
+  const isOnScreen =
+    point.x >= 0 &&
+    point.x <= window.innerWidth &&
+    point.y >= 0 &&
+    point.y <= window.innerHeight;
+
+  if (TRAIL_MODE === "pattern") {
+    letter = isOnScreen
+      ? TRAIL_TEXT[
+          visibleLetters++ % TRAIL_TEXT.length
+        ]
+      : " ";
+  } else if (flightGoesRight) {
+    /* The first visible letter is the b. */
+    letter = isOnScreen
+      ? (visibleLetters++ === 0
+          ? LEAD_LETTER
+          : TRAIL_LETTER)
+      : " ";
+  }
+
+  if (letter === " ") {
+    return;
+  }
+
+  const dash = createLetterElement(letter);
+
+  placeLetter(
+    dash,
+    point,
+    getLetterAngle(distance, totalLength)
+  );
+
   dash.style.opacity = "0.5";
 
   trailGroup.appendChild(dash);
@@ -461,6 +582,32 @@ function createTrailDash(
 
 
 /* ---------------------------------
+   Keep the lead letter next to the bee
+--------------------------------- */
+
+function updateLeadLetter(
+  distance,
+  totalLength
+) {
+  if (!leadLetter) {
+    leadLetter = createLetterElement(LEAD_LETTER);
+    trailGroup.appendChild(leadLetter);
+  }
+
+  placeLetter(
+    leadLetter,
+    routePath.getPointAtLength(distance),
+    getLetterAngle(distance, totalLength)
+  );
+
+  /* Fades in and out together with the bee. */
+  leadLetter.style.opacity = String(
+    0.5 * Number(bee.style.opacity || 0)
+  );
+}
+
+
+/* ---------------------------------
    Add dashes up to current position
 --------------------------------- */
 
@@ -468,13 +615,33 @@ function updateTrail(
   currentDistance,
   totalLength
 ) {
+  const isLead =
+    TRAIL_MODE === "lead" && !flightGoesRight;
+
   const targetDistance = Math.max(
-    currentDistance - TRAIL_GAP,
+    currentDistance -
+      (TRAIL_MODE === "lead"
+        ? LEAD_GAP
+        : TRAIL_GAP),
     0
   );
 
+  let trailDistance = targetDistance;
+
+  if (isLead) {
+    updateLeadLetter(
+      targetDistance,
+      totalLength
+    );
+
+    trailDistance = Math.max(
+      targetDistance - LEAD_TRAIL_GAP,
+      0
+    );
+  }
+
   while (
-    targetDistance - lastDashDistance >=
+    trailDistance - lastDashDistance >=
     DASH_SPACING
   ) {
     lastDashDistance += DASH_SPACING;
@@ -513,6 +680,8 @@ function stopFlight() {
 
   routePath.setAttribute("d", "");
   lastDashDistance = 0;
+  visibleLetters = 0;
+  leadLetter = null;
 }
 
 
@@ -559,6 +728,10 @@ function startFlight() {
 
   const totalLength =
     routePath.getTotalLength();
+
+  flightGoesRight =
+    routePath.getPointAtLength(totalLength).x >
+    routePath.getPointAtLength(0).x;
 
   const duration = randomBetween(
     MIN_FLIGHT_DURATION,
@@ -695,6 +868,10 @@ function startFlight() {
 
     animationFrame = null;
     bee.style.opacity = "0";
+
+    if (leadLetter) {
+      leadLetter.style.opacity = "0";
+    }
 
 
     /*

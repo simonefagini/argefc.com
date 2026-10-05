@@ -369,9 +369,10 @@ a:focus-visible {
 }
 
 .trail-dash {
-  stroke: var(--orange);
-  stroke-width: var(--trail-width);
-  stroke-linecap: round;
+  fill: var(--orange);
+  font-family: inherit;
+  font-weight: 700;
+  user-select: none;
 }
 
 .flying-bee {
