@@ -470,7 +470,8 @@ a:focus-visible {
   fill: var(--orange);
 }
 
-#manual {
+#manual,
+#manual-2026 {
   word-spacing: 0.05em;
 }
 
