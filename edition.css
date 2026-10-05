@@ -407,6 +407,10 @@ h2 {
   text-wrap: pretty;
 }
 
+.edition-note p + p {
+  margin-top: 1em;
+}
+
 .note-link {
   color: var(--green);
 }
