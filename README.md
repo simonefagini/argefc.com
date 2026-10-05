@@ -26,7 +26,7 @@ domain.
 ├── CNAME                    Custom domain config for GitHub Pages
 ├── .nojekyll                Disables Jekyll processing on GitHub Pages
 ├── robots.txt / sitemap.xml  Crawler config
-└── 2022/ 2023/ 2024/ 2025/  One folder per S AM Cup edition, each with
+└── 2022/ … 2026/            One folder per S AM Cup edition, each with
                              its own edition<year>.html page and photo(s)
 ```
 

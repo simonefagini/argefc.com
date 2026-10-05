@@ -1,0 +1,510 @@
+/* Space Grotesk is loaded via <link> in the HTML head,
+   not @import, so it starts fetching immediately instead
+   of waiting on this stylesheet to load first. */
+
+
+/* =================================================
+   CONTROLS
+================================================= */
+
+:root {
+  --green: #195c33;
+  --orange: #de7628;
+  --white: #ffffff;
+  --grey: #b7b7b7;
+  --black: #000000;
+
+  --font-family:
+    "Space Grotesk",
+    Arial,
+    sans-serif;
+
+  /* Main column */
+  --column-width: 980px;
+  --page-gutter: 36px;
+
+  /* Page spacing */
+  --content-top: 100px;
+  --content-bottom: 120px;
+
+  /* ARGE FC title */
+  --main-title-size: clamp(84px, 6.2vw, 150px);
+
+  /* Page title */
+  --page-title-size: clamp(18px, 2.1vw, 28px);
+
+  /* Gallery note */
+  --note-size: clamp(19px, 2vw, 25px);
+  --note-line-height: 1.45;
+
+  /* Gallery grid */
+  --grid-columns: 4;
+  --grid-gap: 14px;
+
+  /* Footer */
+  --footer-size: 13px;
+  --footer-padding: 9px;
+}
+
+
+/* =================================================
+   BASE
+================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+  background-color: var(--white);
+}
+
+body {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: 0;
+
+  overflow-x: hidden;
+
+  color: var(--green);
+  background-color: var(--white);
+
+  font-family: var(--font-family);
+  font-weight: 600;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+
+/* =================================================
+   CONTENT
+================================================= */
+
+.content {
+  position: relative;
+  z-index: 2;
+
+  flex: 1;
+
+  width: min(
+    calc(100% - (var(--page-gutter) * 2)),
+    var(--column-width)
+  );
+
+  margin-inline: auto;
+
+  padding:
+    var(--content-top)
+    0
+    var(--content-bottom);
+}
+
+
+/* =================================================
+   ARGE FC TITLE
+================================================= */
+
+h1 {
+  margin:
+    0
+    0
+    clamp(45px, 6.5vw, 85px);
+
+  font-size: var(--main-title-size);
+  font-weight: 700;
+  line-height: 0.82;
+  letter-spacing: 0;
+}
+
+.title-logo {
+  display: block;
+
+  height: 1.29em;
+  width: auto;
+  aspect-ratio: 404.99 / 137.17;
+  margin-left: -0.265em;
+}
+
+.back-link {
+  display: inline-block;
+
+  transition: color 180ms ease;
+}
+
+.back-link:hover,
+.back-link:focus-visible {
+  color: var(--orange);
+}
+
+.back-link:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 6px;
+}
+
+
+/* =================================================
+   PAGE HEADER
+================================================= */
+
+.gallery-header {
+  margin-bottom: clamp(30px, 4vw, 48px);
+}
+
+h2 {
+  max-width: 100%;
+  margin: 0;
+
+  font-size: var(--page-title-size);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.025em;
+}
+
+
+/* =================================================
+   GALLERY NOTE
+================================================= */
+
+.gallery-note {
+  max-width: var(--column-width);
+
+  margin-bottom: clamp(30px, 4vw, 48px);
+}
+
+.gallery-note p {
+  margin: 0;
+
+  color: var(--grey);
+
+  font-size: var(--note-size);
+  font-weight: 600;
+  line-height: var(--note-line-height);
+  letter-spacing: -0.02em;
+
+  text-wrap: pretty;
+}
+
+.note-link {
+  color: var(--green);
+}
+
+.note-link:hover,
+.note-link:focus-visible {
+  color: var(--orange);
+}
+
+.note-link:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 3px;
+}
+
+
+/* =================================================
+   GALLERY GRID
+
+   4 columns wide to match roughly 20 photos in a tidy
+   block; tiles crop to 3:4 (same ratio as an edition team
+   photo) so the couple of landscape/square shots in the
+   mix still sit flush in the grid.
+================================================= */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  gap: var(--grid-gap);
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.gallery-item {
+  display: block;
+
+  width: 100%;
+  padding: 0;
+  border: 0;
+
+  aspect-ratio: 3 / 4;
+
+  cursor: pointer;
+  background: none;
+
+  overflow: hidden;
+}
+
+.gallery-item img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform 240ms ease;
+}
+
+.gallery-item:hover img,
+.gallery-item:focus-visible img {
+  transform: scale(1.04);
+}
+
+.gallery-item:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 2px;
+}
+
+
+/* =================================================
+   LIGHTBOX
+
+   One shared overlay filled in by JS on click, rather than
+   a page per image. Kept out of the content column entirely
+   (position: fixed) and toggled with the [hidden] attribute.
+================================================= */
+
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: clamp(20px, 6vw, 60px);
+
+  background-color: rgba(0, 0, 0, 0.92);
+}
+
+.lightbox-image {
+  max-width: 100%;
+  max-height: 100%;
+
+  object-fit: contain;
+}
+
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+
+  border: 0;
+
+  color: var(--white);
+  background: none;
+
+  font-family: var(--font-family);
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition: color 180ms ease;
+}
+
+.lightbox-close:hover,
+.lightbox-close:focus-visible,
+.lightbox-prev:hover,
+.lightbox-prev:focus-visible,
+.lightbox-next:hover,
+.lightbox-next:focus-visible {
+  color: var(--orange);
+}
+
+.lightbox-close:focus-visible,
+.lightbox-prev:focus-visible,
+.lightbox-next:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
+}
+
+.lightbox-close {
+  top: clamp(14px, 3vw, 28px);
+  right: clamp(14px, 3vw, 28px);
+
+  font-size: clamp(28px, 4vw, 40px);
+}
+
+.lightbox-prev,
+.lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+
+  font-size: clamp(36px, 6vw, 56px);
+}
+
+.lightbox-prev {
+  left: clamp(6px, 2vw, 24px);
+}
+
+.lightbox-next {
+  right: clamp(6px, 2vw, 24px);
+}
+
+
+/* =================================================
+   FOOTER
+================================================= */
+
+.site-footer {
+  position: relative;
+  z-index: 3;
+
+  width: 100%;
+
+  padding:
+    var(--footer-padding)
+    0;
+
+  color: var(--white);
+  background-color: var(--grey);
+}
+
+.site-footer p {
+  width: min(
+    calc(100% - (var(--page-gutter) * 2)),
+    var(--column-width)
+  );
+
+  margin: 0 auto;
+
+  color: inherit;
+
+  font-size: var(--footer-size);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+
+  text-align: center;
+}
+
+.footer-link {
+  color: var(--white);
+}
+
+.footer-link:hover,
+.footer-link:focus-visible {
+  color: var(--green);
+}
+
+.footer-link:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 3px;
+}
+
+
+/* =================================================
+   TABLET
+================================================= */
+
+@media (max-width: 1180px) and (min-width: 701px) {
+  :root {
+    --column-width: 760px;
+    --page-gutter: clamp(40px, 7vw, 70px);
+
+    --content-top: 90px;
+
+    --page-title-size: clamp(18px, 2.7vw, 26px);
+    --note-size: clamp(19px, 2.7vw, 23px);
+  }
+}
+
+
+/* =================================================
+   MOBILE
+================================================= */
+
+@media (max-width: 700px) {
+  :root {
+    --column-width: 560px;
+    --page-gutter: clamp(26px, 7vw, 40px);
+
+    --content-top: 54px;
+    --content-bottom: 100px;
+
+    --main-title-size: clamp(64px, 18.5vw, 84px);
+
+    --page-title-size: clamp(15px, 4.4vw, 19px);
+
+    --note-size: clamp(20px, 5.5vw, 23px);
+    --note-line-height: 1.42;
+
+    --grid-columns: 2;
+    --grid-gap: 10px;
+
+    --footer-size: clamp(10px, 3vw, 12px);
+    --footer-padding: 11px;
+  }
+
+  h1 {
+    margin-bottom: 45px;
+  }
+
+  .gallery-header {
+    margin-bottom: 28px;
+  }
+
+  .lightbox-prev,
+  .lightbox-next {
+    font-size: clamp(30px, 9vw, 44px);
+  }
+
+  .site-footer {
+    padding:
+      var(--footer-padding)
+      0
+      calc(
+        var(--footer-padding) +
+        env(safe-area-inset-bottom)
+      );
+  }
+
+  .site-footer p {
+    text-wrap: balance;
+  }
+}
+
+
+/* =================================================
+   VERY NARROW PHONES
+================================================= */
+
+@media (max-width: 360px) {
+  :root {
+    --page-title-size: 14px;
+  }
+}
+
+
+/* =================================================
+   REDUCED MOTION
+================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .back-link,
+  .gallery-item img,
+  .lightbox-close,
+  .lightbox-prev,
+  .lightbox-next,
+  .footer-link {
+    transition: none;
+  }
+}
